@@ -1,4 +1,4 @@
-package fr.eni.projetencheres.dal.servelts;
+package fr.eni.projetencheres.dal.servlets;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
