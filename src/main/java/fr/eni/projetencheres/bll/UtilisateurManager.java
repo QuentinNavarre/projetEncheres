@@ -22,7 +22,7 @@ public class UtilisateurManager {
 		return instance;
 	}
 
-	public void seConnecter(String identifiant, String mdp) throws BuisinessException {
+	public void seConnecter(String identifiant, String mdp) throws BusinessException {
 		Utilisateur user = null;
 		if (identifiant.contains("@"))
 			user = utilisateurDAO.getUtilisateurByMail(identifiant);
