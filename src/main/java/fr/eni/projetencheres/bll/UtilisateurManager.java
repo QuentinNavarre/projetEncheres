@@ -26,8 +26,8 @@ public class UtilisateurManager {
 		Utilisateur user = null;
 		if (identifiant.contains("@"))
 			user = utilisateurDAO.getUtilisateurByMail(identifiant);
-
-		utilisateurDAO.getUtilisateurByPseudo(identifiant);
+		else
+			user = utilisateurDAO.getUtilisateurByPseudo(identifiant);
 
 		if (user == null || !mdp.equals(user.getMot_de_passe)) {
 			BusinessException be = new BusinesseException();
