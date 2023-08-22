@@ -11,10 +11,10 @@ import javax.servlet.http.HttpServletResponse;
  * Servlet implementation class ServletSeConnecter
  */
 @WebServlet("/SeConnecter")
-public class ServletSeConnecter extends HttpServlet {
+public class ServletProjetEncheres extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	public ServletSeConnecter() {
+	public ServletProjetEncheres() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
