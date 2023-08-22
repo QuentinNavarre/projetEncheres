@@ -1,25 +1,83 @@
-# Compiled class file
+# Fichiers binaires Java
 *.class
 
-# Log file
-*.log
+ 
 
-# BlueJ files
-*.ctxt
+# Fichiers générés par le compilateur
+*.hprof
 
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
+ 
 
-# Package Files #
+# Paquets
 *.jar
 *.war
-*.nar
 *.ear
 *.zip
 *.tar.gz
 *.rar
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
-replay_pid*
-/build/
+ 
+
+# Fichiers temporaires
+*.swp
+*.swo
+*~
+
+ 
+
+# Fichiers système
+.DS_Store
+
+ 
+
+# Fichiers de build et de système
+bin/
+target/
+out/
+build/
+dist/
+.gradle/
+
+ 
+
+# Fichiers de logs
+*.log
+
+ 
+
+# Fichiers IDE Eclipse spécifiques
+.classpath
+.project
+.settings/
+.factorypath
+META-INF/MANIFEST.MF
+
+ 
+
+# Fichiers IDE généraux
+*.iml
+.idea/
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+
+ 
+
+# Autres fichiers
+*.properties
+*.bak
+*.sw?
+*~
+
+ 
+
+# Fichiers générés par Eclipse Checkstyle
+checkstyle.xml
+
+ 
+
+# Fichiers générés par les tests
+test-output/
