@@ -52,6 +52,7 @@ dist/
 .factorypath
 META-INF/MANIFEST.MF
 
+
  
 
 # Fichiers IDE généraux
@@ -63,6 +64,7 @@ META-INF/MANIFEST.MF
 local.properties
 .settings/
 .loadpath
+META-INF/context.xml
 
  
 
