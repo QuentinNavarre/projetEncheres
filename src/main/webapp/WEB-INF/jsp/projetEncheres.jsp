@@ -9,6 +9,14 @@
 <title>Se connecter</title>
 </head>
 <body>
-
+<form action="processLogin.jsp" method="post">
+        <label for="login">Login:</label>
+        <input type="text" id="login" name="login" required><br><br>
+        
+        <label for="mdp">Mot de passe:</label>
+        <input type="password" id="mdp" name="mdp" required><br><br>
+        
+        <input type="submit" value="Se connecter">
+    </form>
 </body>
 </html>
