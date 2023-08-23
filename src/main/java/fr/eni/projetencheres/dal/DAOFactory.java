@@ -1,10 +1,12 @@
 package fr.eni.projetencheres.dal;
 
+import fr.eni.projetencheres.dal.jdbc.UtilisateurDAOJdbcImpl;
+
 public abstract class DAOFactory {
 	
-	public static ListeCourseDAO getListeCourseDAO()
+	public static UtilisateurDAO getUtilisateurDAO()
 	{
-		return new ListeCourseDAOJdbcImpl();
+		return new UtilisateurDAOJdbcImpl();
 	}
 }
 	

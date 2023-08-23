@@ -6,7 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import fr.eni.projetencheres.BusinessException;
+import fr.eni.projetencheres.bo.Utilisateur;
 import fr.eni.projetencheres.dal.CodesResultatDAL;
+import fr.eni.projetencheres.dal.UtilisateurDAO;
+import fr.eni.projetencheres.dal.ConnectionProvider;
 
 public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 	private static final String SELECT_USER_BY_PSEUDO = "SELECT no_utilisateur, pseudo, nom, prenom, email, telephone, rue, code_postal, ville, mot_de_passe, credit, administrateur FROM UTILISATEURS WHERE pseudo = ?;";
@@ -54,7 +57,7 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 	
 	@Override
 	public Utilisateur getUtilisateurByMail(String mail) throws BusinessException {
-		return getUtilisateurByLogin(mail, SELECT_USER_BY_MAIL);
+		return getUtilisateurByLogin(mail, SELECT_USER_BY_EMAIL);
 	}
 	
 	@Override

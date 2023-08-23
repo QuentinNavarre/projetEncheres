@@ -3,11 +3,12 @@ package fr.eni.projetencheres.bll;
 import fr.eni.projetencheres.BusinessException;
 import fr.eni.projetencheres.bo.Utilisateur;
 import fr.eni.projetencheres.dal.DAOFactory;
+import fr.eni.projetencheres.dal.UtilisateurDAO;
 
 // TODO import fr.eni.projetencheres.dal.UtilisateurDAO;
 public class UtilisateurManager {
 
-	private UtilisateurDAO utilisateurDao;
+	private UtilisateurDAO utilisateurDAO;
 	private static UtilisateurManager instance;
 
 	private UtilisateurManager() {
@@ -29,9 +30,9 @@ public class UtilisateurManager {
 		else
 			user = utilisateurDAO.getUtilisateurByPseudo(identifiant);
 
-		if (user == null || !mdp.equals(user.getMot_de_passe)) {
-			BusinessException be = new BusinesseException();
-			be.ajouterErreur(codeResultatBLL.IDENTIFANT_KO);
+		if (user == null || !mdp.equals(user.getMot_de_passe())) {
+			BusinessException be = new BusinessException();
+			be.ajouterErreur(CodesResultatBLL.IDENTIFIANT_KO);
 			throw be;
 		}
 	}

@@ -9,7 +9,17 @@
 <title>Se connecter</title>
 </head>
 <body>
-<form action="processLogin.jsp" method="post">
+	<form action="processLogin.jsp" method="post">
+		<c:if test="${!empty listeCodesErreur}">
+			<div class="alert alert-danger" role="alert">
+			  <strong>Erreur!</strong>
+			  <ul>
+			  	<c:forEach var="code" items="${listeCodesErreur}">
+			  		<li>${LecteurMessage.getMessageErreur(code)}</li>
+			  	</c:forEach>
+			  </ul>
+			</div>
+		</c:if>
         <label for="login">Login:</label>
         <input type="text" id="login" name="login" required><br><br>
         
