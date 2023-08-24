@@ -27,6 +27,11 @@
         <input type="password" id="mdp" name="mdp" required><br><br>
         
         <input type="submit" value="Se connecter">
+        <label for="rememberMe">Se souvenir de moi :</label>
+		<input type="checkbox" name="rememberMe" id="rememberMe">
+		<input type="text" name="login" id="login" value="${rememberedUser}">
+		
+        
     </form>
 </body>
 </html>
