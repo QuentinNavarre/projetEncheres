@@ -7,6 +7,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import fr.eni.projetencheres.BusinessException;
 import fr.eni.projetencheres.bll.UtilisateurManager;
@@ -21,6 +22,7 @@ public class ServletSeConnecter extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
 		request.getRequestDispatcher("WEB-INF/jsp/projetEncheres.jsp").forward(request, response);
 	}
 
@@ -30,16 +32,13 @@ public class ServletSeConnecter extends HttpServlet {
 		String mdp = request.getParameter("mdp");
 
 		try {
-			boolean authentifie = UtilisateurManager.getInstance().authentifier(identifiant, mdp);
 
-			if (authentifie) {
-				// L'utilisateur est authentifié, redirigez-le vers la page d'accueil
-				response.sendRedirect("PageAccueil.jsp");
-			} else {
-				// L'authentification a échoué, renvoyez un message d'erreur à l'utilisateur
-				request.setAttribute("erreur", "Nom d'utilisateur ou mot de passe incorrect");
-				request.getRequestDispatcher("WEB-INF/jsp/projetEncheres.jsp").forward(request, response);
-			}
+			UtilisateurManager.getInstance().seConnecter(identifiant, mdp);
+			HttpSession session = request.getSession(); // ++
+			session.setAttribute("identifiant", identifiant);
+			session.setAttribute("userLoggedIn", true);
+			response.sendRedirect(request.getContextPath() + "/encheres");
+
 		} catch (BusinessException e) {
 			// Gérez l'exception BusinessException
 			request.setAttribute("listeCodesErreur", e.getListeCodesErreur());
