@@ -9,4 +9,3 @@ public abstract class DAOFactory {
 		return new UtilisateurDAOJdbcImpl();
 	}
 }
-	
