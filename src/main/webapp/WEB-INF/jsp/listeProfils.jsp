@@ -9,6 +9,10 @@
     <title>Liste des Utilisateurs</title>
 </head>
 <body>
+		<c:if
+			test="${ !empty sessionScope.identifiant && !empty sessionScope.userLoggedIn }">
+			<p>User : ${ sessionScope.identifiant }</p>
+		</c:if>
       <h1>Liste des Utilisateurs inscrits</h1>
 	  <hr>	 
 	   <table>

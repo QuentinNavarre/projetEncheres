@@ -25,6 +25,8 @@
     	<p><strong>Ce pseudo n'existe pas</strong></p>
     </c:if>
     
+    <a href="${pageContext.request.contextPath}/WEB_INF/jsp/accueil.jsp">Retour</a>
+    
 		
 </body>
 </html>

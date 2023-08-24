@@ -17,7 +17,7 @@ import fr.eni.projetencheres.bo.Utilisateur;
 /**
  * Servlet implementation class ServletListeProfils
  */
-@WebServlet("/ServletListeProfils")
+@WebServlet("/ListeProfils")
 public class ServletListeProfils extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

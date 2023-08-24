@@ -7,16 +7,28 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Accueil</title>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+	<link href="style.css" rel="stylesheet">
 </head>
 <body>
 
 	<nav class="navbar bg-body-tertiary">
 		<div class="container-fluid">
 			<span class="navbar-brand mb-0 h1">ENI-ENCHÈRES</span>
-			<a href="<%=request.getContextPath()%>/SeConnecter">S'inscrire - Se connecter</a>
-		</div>
-				<div class="d-flex justify-content-end mt-2">
-			
+			<div class="d-flex justify-content-start">
+				<c:if
+					test="${empty sessionScope.identifiant && empty sessionScope.userLoggedIn }">
+					<a href="${pageContext.request.contextPath}/SeConnecter">S'inscrire - Se connecter</a>
+				</c:if>
+				<c:if
+					test="${ !empty sessionScope.identifiant && !empty sessionScope.userLoggedIn }">
+					<p>Bonjour ${ sessionScope.identifiant }</p>
+					<a href="${pageContext.request.contextPath}/ListeProfils">Liste Utilisateurs</a>
+					<a href="#">Enchères</a>
+					<a href="#">Vendre un article</a>
+					<a href="#">Mon profil</a>
+					<a href="${pageContext.request.contextPath}/TestServletDeconnexion">Se déconnecter</a>
+				</c:if>
+			</div>
 		</div>
 	</nav>
 
