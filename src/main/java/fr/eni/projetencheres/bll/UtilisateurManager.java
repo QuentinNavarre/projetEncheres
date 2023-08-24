@@ -1,13 +1,15 @@
 package fr.eni.projetencheres.bll;
 
 import java.util.List;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import fr.eni.projetencheres.BusinessException;
 import fr.eni.projetencheres.bo.Utilisateur;
 import fr.eni.projetencheres.dal.DAOFactory;
 import fr.eni.projetencheres.dal.UtilisateurDAO;
 
-// TODO import fr.eni.projetencheres.dal.UtilisateurDAO;
 public class UtilisateurManager {
 
 	private UtilisateurDAO utilisateurDAO;
@@ -47,5 +49,52 @@ public class UtilisateurManager {
 	public Utilisateur voirUtilisateur(String pseudo) throws BusinessException {
 		Utilisateur user = utilisateurDAO.getUtilisateur(pseudo);
 		return user;
+	}
+
+	public boolean authentifier(String identifiant, String mdp) throws BusinessException {
+		Utilisateur user = null;
+
+		// Vérifiez si l'identifiant est une adresse e-mail ou un pseudo
+		if (identifiant.contains("@")) {
+			user = utilisateurDAO.getUtilisateurByMail(identifiant);
+		} else {
+			user = utilisateurDAO.getUtilisateurByPseudo(identifiant);
+		}
+
+		// Si aucun utilisateur correspondant n'est trouvé, l'authentification échoue
+		if (user == null) {
+			return false;
+		}
+
+		String motDePasseHache = hashSHA256(mdp);
+
+		// Comparez le mot de passe haché avec celui stocké
+		if (motDePasseHache.equals(user.getMot_de_passe())) {
+			return true; // L'authentification a réussi
+		} else {
+			BusinessException be = new BusinessException();
+			be.ajouterErreur(CodesResultatBLL.IDENTIFIANT_KO);
+			throw be; // L'authentification a échoué, lancez une BusinessException
+		}
+	}
+
+	private String hashSHA256(String motDePasse) {
+		try {
+			MessageDigest digest = MessageDigest.getInstance("SHA-256");
+			byte[] hash = digest.digest(motDePasse.getBytes(StandardCharsets.UTF_8));
+			StringBuilder hexString = new StringBuilder(2 * hash.length);
+
+			for (byte b : hash) {
+				String hex = Integer.toHexString(0xff & b);
+				if (hex.length() == 1) {
+					hexString.append('0');
+				}
+				hexString.append(hex);
+			}
+
+			return hexString.toString();
+		} catch (NoSuchAlgorithmException e) {
+			return null;
+		}
 	}
 }
