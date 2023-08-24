@@ -1,5 +1,7 @@
 package fr.eni.projetencheres.bll;
 
+import java.util.List;
+
 import fr.eni.projetencheres.BusinessException;
 import fr.eni.projetencheres.bo.Utilisateur;
 import fr.eni.projetencheres.dal.DAOFactory;
@@ -35,5 +37,15 @@ public class UtilisateurManager {
 			be.ajouterErreur(CodesResultatBLL.IDENTIFIANT_KO);
 			throw be;
 		}
+	}
+	
+	public List<Utilisateur> allUtilisateurs() throws BusinessException {
+		List<Utilisateur> listeUtilisateurs = utilisateurDAO.getAllUtilisateurs();
+		return listeUtilisateurs;
+	}
+	
+	public Utilisateur voirUtilisateur(String pseudo) throws BusinessException {
+		Utilisateur user = utilisateurDAO.getUtilisateur(pseudo);
+		return user;
 	}
 }

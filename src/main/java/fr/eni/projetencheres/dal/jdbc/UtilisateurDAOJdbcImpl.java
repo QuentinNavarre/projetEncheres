@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import fr.eni.projetencheres.BusinessException;
 import fr.eni.projetencheres.bo.Utilisateur;
@@ -14,6 +16,8 @@ import fr.eni.projetencheres.dal.ConnectionProvider;
 public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 	private static final String SELECT_USER_BY_PSEUDO = "SELECT no_utilisateur, pseudo, nom, prenom, email, telephone, rue, code_postal, ville, mot_de_passe, credit, administrateur FROM UTILISATEURS WHERE pseudo = ?;";
 	private static final String SELECT_USER_BY_EMAIL = "SELECT no_utilisateur, pseudo, nom, prenom, email, telephone, rue, code_postal, ville, mot_de_passe, credit, administrateur FROM UTILISATEURS WHERE email = ?;";
+	private static final String SELECT_ALL = "SELECT pseudo, nom, prenom, email, telephone, rue, code_postal, ville FROM UTILISATEURS";
+	private static final String SELECT_USER = "SELECT pseudo, nom, prenom, email, telephone, rue, code_postal, ville FROM UTILISATEURS WHERE pseudo = ?;";
 	
 	
 	private Utilisateur getUtilisateurByLogin(String login, String requete) throws BusinessException {
@@ -64,5 +68,70 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 	public Utilisateur getUtilisateurByPseudo(String pseudo) throws BusinessException {
 		return getUtilisateurByLogin(pseudo, SELECT_USER_BY_PSEUDO);
 	}
+	
+	public List<Utilisateur> getAllUtilisateurs() throws BusinessException {
+		List<Utilisateur> listeUtilisateurs = new ArrayList<Utilisateur>();
+		
+		try(Connection cnx = ConnectionProvider.getConnection(); 
+				PreparedStatement psmt = cnx.prepareStatement(SELECT_ALL)){			
+			try(ResultSet rs = psmt.executeQuery()){
+				while(rs.next()) {
+					Utilisateur utilisateur = new Utilisateur(rs.getString("pseudo"),
+							rs.getString("nom"),
+							rs.getString("prenom"),
+							rs.getString("email"),
+							rs.getString("telephone"),
+							rs.getString("rue"),
+							rs.getString("code_postal"),
+							rs.getString("ville"));
+					listeUtilisateurs.add(utilisateur);
+				}
+				
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}catch(SQLException e) {
+			BusinessException be = new BusinessException();
+			be.ajouterErreur(CodesResultatDAL.SQL_EXCEPTION);
+			e.printStackTrace();
+			throw be;
+		}
+		return listeUtilisateurs;
+	}
+	
+	public Utilisateur getUtilisateur(String pseudo) throws BusinessException {
+		Utilisateur user = null;
+		String requete = SELECT_USER;
+		
+		try(Connection cnx = ConnectionProvider.getConnection(); 
+				PreparedStatement psmt = cnx.prepareStatement(requete)){
+			
+			psmt.setString(1, pseudo);
+			
+			try(ResultSet rs = psmt.executeQuery()){
+				if(rs.next()) {
+					user = new Utilisateur(rs.getString("pseudo"),
+							rs.getString("nom"),
+							rs.getString("prenom"),
+							rs.getString("email"),
+							rs.getString("telephone"),
+							rs.getString("rue"),
+							rs.getString("code_postal"),
+							rs.getString("ville"));
+				}
+				
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}catch(SQLException e) {
+			BusinessException be = new BusinessException();
+			be.ajouterErreur(CodesResultatDAL.SQL_EXCEPTION);
+			e.printStackTrace();
+			throw be;
+		}
+		return user;
+	}
+		
+	}
 
-}
+
