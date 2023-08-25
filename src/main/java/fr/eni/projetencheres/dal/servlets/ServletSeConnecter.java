@@ -28,14 +28,7 @@ public class ServletSeConnecter extends HttpServlet {
 		String hashedPassword = mdp;
 
 		try {
-			
-			
-			System.out.println("Tentative de connexion avec identifiant : " + identifiant);
-	        System.out.println("Mot de passe en clair : " + mdp);
-	        System.out.println("Mot de passe haché : " + hashedPassword);
 
-
-			// Vérifiez l'authentification en utilisant le mot de passe haché
 			if (UtilisateurManager.getInstance().authentifier(identifiant, hashedPassword)) {
 				HttpSession session = request.getSession();
 				session.setAttribute("identifiant", identifiant);
@@ -43,7 +36,6 @@ public class ServletSeConnecter extends HttpServlet {
 
 				String rememberMe = request.getParameter("rememberMe");
 
-				// Vérifiez si la case a été cochée
 				if ("on".equals(rememberMe)) {
 					// Créez un cookie pour se souvenir du nom d'utilisateur
 					Cookie cookie = new Cookie("rememberedUser", identifiant);
@@ -63,27 +55,19 @@ public class ServletSeConnecter extends HttpServlet {
 					}
 				}
 
-				// Si un nom d'utilisateur est mémorisé, remplissez automatiquement le champ du formulaire
-		
 				if (rememberedUser != null) {
 					request.setAttribute("rememberedUser", rememberedUser);
-					System.out.println("Nom d'utilisateur mémorisé : " + rememberedUser);
 				}
 
-				// Réinitialisez le champ de mot de passe pour la sécurité
 				request.setAttribute("mdp", "******");
 
 				response.sendRedirect(request.getContextPath() + "/encheres");
 			} else {
-				System.out.println("Authentification échouée pour : " + identifiant);
-				// Authentification échouée
 				BusinessException be = new BusinessException();
 				be.ajouterErreur(CodesResultatBLL.IDENTIFIANT_KO);
 				throw be;
 			}
 		} catch (BusinessException e) {
-			System.out.println("Exception BusinessException : " + e.getMessage());
-			// Gérez l'exception BusinessException
 			request.setAttribute("listeCodesErreur", e.getListeCodesErreur());
 			request.getRequestDispatcher("WEB-INF/jsp/projetEncheres.jsp").forward(request, response);
 		}

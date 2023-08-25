@@ -65,23 +65,17 @@ public class UtilisateurManager {
 		if (user == null) {
 			return false;
 		}
-		
+
 		String motDePasseStocke = user.getMot_de_passe();
 		String motDePasseHache = hashSHA256(mdp);
-	    System.out.println("Mot de passe stocké en base de données : " + motDePasseStocke);
-	    System.out.println("mot de passe hache a la vérification : " + motDePasseHache);
-
-
-		
-		
 
 		// Comparez le mot de passe haché avec celui stocké
 		if (motDePasseHache.equals(motDePasseStocke)) {
-			return true; // L'authentification a réussi
+			return true;
 		} else {
 			BusinessException be = new BusinessException();
 			be.ajouterErreur(CodesResultatBLL.IDENTIFIANT_KO);
-			throw be; // L'authentification a échoué, lancez une BusinessException
+			throw be;
 		}
 	}
 
