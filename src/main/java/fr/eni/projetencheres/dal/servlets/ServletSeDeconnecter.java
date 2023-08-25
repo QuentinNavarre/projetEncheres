@@ -28,3 +28,4 @@ public class ServletSeDeconnecter extends HttpServlet {
         response.sendRedirect("Deconnection.jsp");
     }
 }
+
