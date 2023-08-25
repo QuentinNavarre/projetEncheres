@@ -27,7 +27,7 @@
 					<a href="${pageContext.request.contextPath}/ListeProfils">Liste Utilisateurs</a>
 					<a href="#">Enchères</a>
 					<a href="#">Vendre un article</a>
-					<a href="#">Mon profil</a>
+					<a href="${pageContext.request.contextPath}/MonProfil">Mon profil</a>
 					<a href="${pageContext.request.contextPath}/TestServletDeconnexion">Se déconnecter</a>
 				</c:if>
 			</div>
@@ -52,5 +52,7 @@
         
         <input type="submit" value="Se connecter">
     </form>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js" integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa" crossorigin="anonymous"></script>
 </body>
 </html>
