@@ -98,4 +98,8 @@ public class UtilisateurManager {
 			return null;
 		}
 	}
+	
+	public void modifierProfil(Utilisateur user) throws BusinessException {
+		utilisateurDAO.modifierUtilisateur(user);
+		}
 }

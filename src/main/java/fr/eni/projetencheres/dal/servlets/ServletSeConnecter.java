@@ -16,10 +16,11 @@ public class ServletSeConnecter extends HttpServlet {
 		super();
 	}
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		request.getRequestDispatcher("WEB-INF/jsp/projetEncheres.jsp").forward(request, response);
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.getRequestDispatcher("WEB-INF/jsp/connexion.jsp").forward(request, response);
 	}
+
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -69,7 +70,7 @@ public class ServletSeConnecter extends HttpServlet {
 			}
 		} catch (BusinessException e) {
 			request.setAttribute("listeCodesErreur", e.getListeCodesErreur());
-			request.getRequestDispatcher("WEB-INF/jsp/projetEncheres.jsp").forward(request, response);
+			request.getRequestDispatcher("WEB-INF/jsp/connexion.jsp").forward(request, response);
 		}
 	}
 }
