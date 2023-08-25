@@ -40,12 +40,12 @@ public class UtilisateurManager {
 			throw be;
 		}
 	}
-	
+
 	public List<Utilisateur> allUtilisateurs() throws BusinessException {
 		List<Utilisateur> listeUtilisateurs = utilisateurDAO.getAllUtilisateurs();
 		return listeUtilisateurs;
 	}
-	
+
 	public Utilisateur voirUtilisateur(String pseudo) throws BusinessException {
 		Utilisateur user = utilisateurDAO.getUtilisateur(pseudo);
 		return user;
@@ -65,11 +65,18 @@ public class UtilisateurManager {
 		if (user == null) {
 			return false;
 		}
-
+		
+		String motDePasseStocke = user.getMot_de_passe();
 		String motDePasseHache = hashSHA256(mdp);
+	    System.out.println("Mot de passe stocké en base de données : " + motDePasseStocke);
+	    System.out.println("mot de passe hache a la vérification : " + motDePasseHache);
+
+
+		
+		
 
 		// Comparez le mot de passe haché avec celui stocké
-		if (motDePasseHache.equals(user.getMot_de_passe())) {
+		if (motDePasseHache.equals(motDePasseStocke)) {
 			return true; // L'authentification a réussi
 		} else {
 			BusinessException be = new BusinessException();
@@ -78,7 +85,7 @@ public class UtilisateurManager {
 		}
 	}
 
-	private String hashSHA256(String motDePasse) {
+	public String hashSHA256(String motDePasse) {
 		try {
 			MessageDigest digest = MessageDigest.getInstance("SHA-256");
 			byte[] hash = digest.digest(motDePasse.getBytes(StandardCharsets.UTF_8));
