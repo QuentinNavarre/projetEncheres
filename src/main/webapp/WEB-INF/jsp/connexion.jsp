@@ -6,13 +6,11 @@
 <html>
 <%@ include file="/WEB-INF/fragments/head.jsp" %>
 <body>
-	
 	<nav class="navbar bg-body-tertiary">
 		<div class="container-fluid">
 			<span class="navbar-brand mb-0 h1">ENI-ENCHÈRES</span>
 		</div>
 	</nav>
-	
 	<div class="my-4 text-center">
 		<form method="post">
 			<c:if test="${!empty listeCodesErreur}">
@@ -26,8 +24,7 @@
 				</div>
 			</c:if>
 	        <label for="login">Login:</label>
-			<input type="text" id="login" name="login" value="${rememberedUser}" required><br><br>
-	
+	        <input type="text" id="login" name="login" required><br><br>
 	        
 	        <label for="mdp">Mot de passe:</label>
 	        <input type="password" id="mdp" name="mdp" required><br><br>
@@ -35,11 +32,11 @@
 	        <input type="submit" value="Se connecter">
 	        <label for="rememberMe">Se souvenir de moi :</label>
 			<input type="checkbox" name="rememberMe" id="rememberMe">
+			<input type="text" name="login" id="login" value="${rememberedUser}">	       
 	    </form>
-	    <br>
-   		<button onclick="window.location.href='${pageContext.request.contextPath}/Inscription'">Créer un compte</button>
-    </div>
-    
-    <%@ include file="/WEB-INF/fragments/footer.html" %>
+    <br>
+   <button onclick="window.location.href='${pageContext.request.contextPath}/Inscription'">Créer un compte</button>
+	</div>
+   <%@ include file="/WEB-INF/fragments/footer.html" %>
 </body>
 </html>
