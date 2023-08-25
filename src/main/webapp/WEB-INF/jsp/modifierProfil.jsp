@@ -7,7 +7,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Mon Profil</title>
+	<title>Modification du Profil</title>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 	<link href="style.css" rel="stylesheet">
 </head>
@@ -27,20 +27,29 @@
 					<a href="${pageContext.request.contextPath}/ListeProfils">Liste Utilisateurs</a>
 					<a href="#">Enchères</a>
 					<a href="#">Vendre un article</a>
-					<a href="#">Mon profil</a>
+					<a href="${pageContext.request.contextPath}/MonProfil">Mon profil</a>
 					<a href="${pageContext.request.contextPath}/TestServletDeconnexion">Se déconnecter</a>
 				</c:if>
 			</div>
 		</div>
 	</nav>
 	<c:if test="${not empty user}">
-	<p>Profil de  ${user.pseudo}</p>
-        <p><strong>Nom:</strong> <c:out value="${user.nom}" /></p>
-        <p><strong>Prénom:</strong> <c:out value="${user.prenom}" /></p>
-        <p><strong>Email:</strong> <c:out value="${user.email}" /></p>
-        <p><strong>Téléphone:</strong> <c:out value="${user.telephone}" /></p>
-        <p><strong>Rue:</strong> <c:out value="${user.rue}" /></p>
-        <p><strong>Code Postal:</strong> <c:out value="${user.code_postal}" /></p>
-        <p><strong>Ville:</strong> <c:out value="${user.ville}" /></p>
-        <button onclick="window.location.href = '${pageContext.request.contextPath}/ModifierProfil';"> Modifier</button>
+	<form action="ModifierProfil" method="post" accept-charset="UTF-8">
+	<p>Modifier profil de  ${user.pseudo}</p>
+        <label for="nom">Nom :</label>
+        <input type="text" id="nom" name="nom" value="${user.nom}"><br>
+        <label for="prenom">Prenom :</label>
+        <input type="text" id="prenom" name="prenom" value="${user.prenom}"><br>
+        <label for="email">Email :</label>
+        <input type="text" id="email" name="email" value="${user.email}"><br>
+        <label for="tel">Téléphone :</label>
+        <input type="text" id="tel" name="tel" value="${user.telephone}"><br>
+        <label for="rue">Rue :</label>
+        <input type="text" id="rue" name="rue" value="${user.rue}"><br>
+        <label for="cp">Code Postal :</label>
+        <input type="text" id="cp" name="cp" value="${user.code_postal}"><br>
+        <label for="ville">Ville :</label>
+        <input type="text" id="ville" name="ville" value="${user.ville}"><br>
+        <input type="submit" value="Confirmer">
+        </form>
     </c:if>

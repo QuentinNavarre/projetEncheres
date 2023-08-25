@@ -18,6 +18,7 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 	private static final String SELECT_USER_BY_EMAIL = "SELECT no_utilisateur, pseudo, nom, prenom, email, telephone, rue, code_postal, ville, mot_de_passe, credit, administrateur FROM UTILISATEURS WHERE email = ?;";
 	private static final String SELECT_ALL = "SELECT pseudo, nom, prenom, email, telephone, rue, code_postal, ville FROM UTILISATEURS";
 	private static final String SELECT_USER = "SELECT pseudo, nom, prenom, email, telephone, rue, code_postal, ville FROM UTILISATEURS WHERE pseudo = ?;";
+	private static final String UPDATE_USER = "UPDATE UTILISATEURS SET nom=?, prenom=?, email=?, telephone=?, rue=?, code_postal=?, ville=? WHERE pseudo = ?;";
 	
 	
 	private Utilisateur getUtilisateurByLogin(String login, String requete) throws BusinessException {
@@ -131,7 +132,30 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 		}
 		return user;
 	}
-		
-	}
 
+public void modifierUtilisateur(Utilisateur utilisateur) throws BusinessException {
+	String requete = UPDATE_USER;
+	
+	try(Connection cnx = ConnectionProvider.getConnection(); 
+			PreparedStatement psmt = cnx.prepareStatement(requete)){
+		
+		psmt.setString(1, utilisateur.getNom());
+		psmt.setString(2, utilisateur.getPrenom());
+		psmt.setString(3, utilisateur.getEmail());
+		psmt.setString(4, utilisateur.getTelephone());
+		psmt.setString(5, utilisateur.getRue());
+		psmt.setString(6, utilisateur.getCode_postal());
+		psmt.setString(7, utilisateur.getVille());
+		psmt.setString(8, utilisateur.getPseudo());
+		
+		psmt.executeUpdate();
+
+		}catch(SQLException e) {
+		BusinessException be = new BusinessException();
+		be.ajouterErreur(CodesResultatDAL.SQL_EXCEPTION);
+		e.printStackTrace();
+		throw be;
+		}
+	}
+}
 

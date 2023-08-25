@@ -1,6 +1,7 @@
 package fr.eni.projetencheres.dal.servlets;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -29,7 +30,7 @@ public class ServletModifierProfil extends HttpServlet {
 		    	try {
 		    		Utilisateur user = UtilisateurManager.getInstance().voirUtilisateur(utilisateurConnecte);
 		    		request.setAttribute("user", user);
-		    		request.getRequestDispatcher("/WEB-INF/jsp/monProfil.jsp").forward(request, response);
+		    		request.getRequestDispatcher("/WEB-INF/jsp/modifierProfil.jsp").forward(request, response);
 				} catch (BusinessException e) {
 					e.printStackTrace();
 				}
@@ -39,8 +40,27 @@ public class ServletModifierProfil extends HttpServlet {
 
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
+		HttpSession session = request.getSession();
+	    String utilisateurConnecte = (String) session.getAttribute("identifiant");
+	    
+		try {
+	        Utilisateur user = UtilisateurManager.getInstance().voirUtilisateur(utilisateurConnecte);
 
+	        user.setNom(request.getParameter("nom"));
+	        user.setPrenom(request.getParameter("prenom"));
+	        user.setEmail(request.getParameter("email"));
+	        user.setTelephone(request.getParameter("tel"));
+	        user.setRue(request.getParameter("rue"));
+	        user.setCode_postal(request.getParameter("cp"));
+	        user.setVille(request.getParameter("ville"));
+
+	        UtilisateurManager.getInstance().modifierProfil(user);
+	        
+	        response.sendRedirect(request.getContextPath() + "/MonProfil");
+	        //request.getRequestDispatcher("/WEB-INF/jsp/monProfil.jsp").forward(request, response);
+		} catch (BusinessException e) {
+			e.printStackTrace();
+		}
+	}
 }
+
