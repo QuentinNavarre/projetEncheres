@@ -51,6 +51,37 @@
 	</div>
 	
 	
+	<br>
+
+	<c:if test="${ !empty sessionScope.identifiant && !empty sessionScope.userLoggedIn }">
+		<div class="container">
+			 <div class="row justify-content-start">
+				<div class="col-4">
+					<input type="radio" name="filtres" id="achats" value="achats" onclick="onclickAchats()">
+					<label for="encheresencours">Achats</label><br>
+
+					<input type="checkbox" name="encheresouvertes" id="encheresouvertes">
+					<label for="encheresencours">Enchères ouvertes</label><br>
+					<input type="checkbox" name="encheresencours" id="encheresencours">
+					<label for="encheresencours">Mes enchères en cours</label><br>
+					<input type="checkbox" name="encheresremportees" id="encheresremportees">
+					<label for="encheresremportees">Mes enchères remportées</label>	
+				</div>		
+				<div class="col-4">
+				<input type="radio" name="filtres" id="ventes" value="ventes" onclick="onclickVentes()">
+				<label for="ventes">Mes ventes</label><br>
+
+					<input type="checkbox" name="ventesencours" id="ventesencours">
+					<label for="ventesencours">Mes ventes en cours</label><br>
+					<input type="checkbox" name="ventesnondebutees" id="ventesnondebutees">
+					<label for="ventesnondebutees">Ventes non débutées</label><br>
+					<input type="checkbox" name="ventesterminees" id="ventesterminees">
+					<label for="ventesterminees">Ventes terminéees</label>	
+				</div>
+			</div>
+		</div>
+	</c:if>
+
 	<script type="application/javascript">
 		
     function onclickAchats(){
@@ -90,6 +121,7 @@
         ventesterminees.disabled = false;
     }
 	</script>
+
 
 	<%@ include file="/WEB-INF/fragments/footer.html" %>
 </body>
