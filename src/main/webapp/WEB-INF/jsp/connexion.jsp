@@ -10,9 +10,11 @@
 <body>
 	<nav class="navbar bg-body-tertiary">
 		<div class="container-fluid">
-			<span class="navbar-brand mb-0 h1">ENI-ENCHÈRES</span>
+			<span class="navbar-brand mb-0 h1"><a href="${pageContext.request.contextPath}/encheres"><img src="${pageContext.request.contextPath}/resources/logo.png" alt="Logo" class="img-fluid rounded-circle" style="max-width: 100px; max-height: 80px;"></a>			
+			ENI-ENCHÈRES</span>
 		</div>
 	</nav>
+	
 	<div class="my-4 text-center">
 		<form method="post">
 			<c:if test="${!empty listeCodesErreur}">
@@ -34,7 +36,6 @@
 	        <input type="submit" value="Se connecter">
 	        <label for="rememberMe">Se souvenir de moi :</label>
 			<input type="checkbox" name="rememberMe" id="rememberMe">
-			<input type="text" name="login" id="login" value="${rememberedUser}">	       
 	    </form>
     <br>
    <button onclick="window.location.href='${pageContext.request.contextPath}/Inscription'">Créer un compte</button>

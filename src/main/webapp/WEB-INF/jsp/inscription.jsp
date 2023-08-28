@@ -8,12 +8,14 @@
 
 	<nav class="navbar bg-body-tertiary">
 		<div class="container-fluid">
-			<span class="navbar-brand mb-0 h1">ENI-ENCHÈRES</span>
+			<span class="navbar-brand mb-0 h1"><a href="${pageContext.request.contextPath}/encheres"><img src="${pageContext.request.contextPath}/resources/logo.png" alt="Logo" class="img-fluid rounded-circle" style="max-width: 100px; max-height: 80px;"></a>			
+			ENI-ENCHÈRES</span>
 		</div>
 	</nav>
 	<div class="my-4 text-center">
 	    <h1>Inscription</h1>
 	    <form action="Inscription" method="post">
+	    
 	        <label for="pseudo">Pseudo :</label>
 	        <input type="text" id="pseudo" name="pseudo" pattern="^[a-zA-Z0-9]+$" required><br>
 	        
