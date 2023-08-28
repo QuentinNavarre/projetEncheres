@@ -7,7 +7,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Affichage Utilisateur</title>
+	<title>Mon Profil</title>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 	<link href="style.css" rel="stylesheet">
 </head>
@@ -34,24 +34,17 @@
 			</div>
 		</div>
 	</nav>
-      <h1>Vous avez choisi l'utilisateur suivant :</h1>
-	  <hr>
-	 <c:if test="${not empty utilisateur}">
-        <p><strong>Pseudo:</strong> <c:out value="${utilisateur.pseudo}" /></p>
-        <p><strong>Nom:</strong> <c:out value="${utilisateur.nom}" /></p>
-        <p><strong>Prénom:</strong> <c:out value="${utilisateur.prenom}" /></p>
-        <p><strong>Email:</strong> <c:out value="${utilisateur.email}" /></p>
-        <p><strong>Téléphone:</strong> <c:out value="${utilisateur.telephone}" /></p>
-        <p><strong>Rue:</strong> <c:out value="${utilisateur.rue}" /></p>
-        <p><strong>Code Postal:</strong> <c:out value="${utilisateur.code_postal}" /></p>
-        <p><strong>Ville:</strong> <c:out value="${utilisateur.ville}" /></p>
+	<c:if test="${not empty user}">
+	<p>Profil de  ${user.pseudo}</p>
+        <p><strong>Nom:</strong> <c:out value="${user.nom}" /></p>
+        <p><strong>Prénom:</strong> <c:out value="${user.prenom}" /></p>
+        <p><strong>Email:</strong> <c:out value="${user.email}" /></p>
+        <p><strong>Téléphone:</strong> <c:out value="${user.telephone}" /></p>
+        <p><strong>Rue:</strong> <c:out value="${user.rue}" /></p>
+        <p><strong>Code Postal:</strong> <c:out value="${user.code_postal}" /></p>
+        <p><strong>Ville:</strong> <c:out value="${user.ville}" /></p>
+        <button onclick="window.location.href = '${pageContext.request.contextPath}/ModifierProfil';"> Modifier</button>
     </c:if>
-    <c:if test="${empty utilisateur}">
-    	<p><strong>Ce pseudo n'existe pas</strong></p>
-    </c:if>
-    
-    <a href="${pageContext.request.contextPath}/WEB_INF/jsp/accueil.jsp">Retour</a>
-    
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js" integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa" crossorigin="anonymous"></script>
 </body>

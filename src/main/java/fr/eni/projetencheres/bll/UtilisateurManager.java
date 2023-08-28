@@ -40,12 +40,12 @@ public class UtilisateurManager {
 			throw be;
 		}
 	}
-	
+
 	public List<Utilisateur> allUtilisateurs() throws BusinessException {
 		List<Utilisateur> listeUtilisateurs = utilisateurDAO.getAllUtilisateurs();
 		return listeUtilisateurs;
 	}
-	
+
 	public Utilisateur voirUtilisateur(String pseudo) throws BusinessException {
 		Utilisateur user = utilisateurDAO.getUtilisateur(pseudo);
 		return user;
@@ -66,19 +66,20 @@ public class UtilisateurManager {
 			return false;
 		}
 
+		String motDePasseStocke = user.getMot_de_passe();
 		String motDePasseHache = hashSHA256(mdp);
 
 		// Comparez le mot de passe haché avec celui stocké
-		if (motDePasseHache.equals(user.getMot_de_passe())) {
-			return true; // L'authentification a réussi
+		if (motDePasseHache.equals(motDePasseStocke)) {
+			return true;
 		} else {
 			BusinessException be = new BusinessException();
 			be.ajouterErreur(CodesResultatBLL.IDENTIFIANT_KO);
-			throw be; // L'authentification a échoué, lancez une BusinessException
+			throw be;
 		}
 	}
 
-	private String hashSHA256(String motDePasse) {
+	public String hashSHA256(String motDePasse) {
 		try {
 			MessageDigest digest = MessageDigest.getInstance("SHA-256");
 			byte[] hash = digest.digest(motDePasse.getBytes(StandardCharsets.UTF_8));
@@ -97,4 +98,8 @@ public class UtilisateurManager {
 			return null;
 		}
 	}
+	
+	public void modifierProfil(Utilisateur user) throws BusinessException {
+		utilisateurDAO.modifierUtilisateur(user);
+		}
 }

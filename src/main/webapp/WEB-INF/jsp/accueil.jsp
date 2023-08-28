@@ -2,18 +2,15 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Accueil</title>
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-	<link href="style.css" rel="stylesheet">
-</head>
+
+<%@ include file="/WEB-INF/fragments/head.jsp" %>
+
 <body>
 
 	<nav class="navbar bg-body-tertiary">
 		<div class="container-fluid">
-			<span class="navbar-brand mb-0 h1">ENI-ENCHÈRES</span>
+			<span class="navbar-brand mb-0 h1"><a href="${pageContext.request.contextPath}/encheres"><img src="${pageContext.request.contextPath}/resources/logo.png" alt="Logo" class="img-fluid rounded-circle" style="max-width: 100px; max-height: 80px;"></a>			
+			ENI-ENCHÈRES</span>
 			<div class="d-flex justify-content-start">
 				<c:if
 					test="${empty sessionScope.identifiant && empty sessionScope.userLoggedIn }">
@@ -25,7 +22,7 @@
 					<a href="${pageContext.request.contextPath}/ListeProfils">Liste Utilisateurs</a>
 					<a href="#">Enchères</a>
 					<a href="#">Vendre un article</a>
-					<a href="#">Mon profil</a>
+					<a href="${pageContext.request.contextPath}/MonProfil">Mon profil</a>
 					<a href="${pageContext.request.contextPath}/TestServletDeconnexion">Se déconnecter</a>
 				</c:if>
 			</div>
@@ -52,9 +49,48 @@
 			
 		</form>
 	</div>
-
 	
-	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js" integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa" crossorigin="anonymous"></script>
+	
+	<script type="application/javascript">
+		
+    function onclickAchats(){
+        let ventesencours = document.getElementById("ventesencours");
+        ventesencours.checked = false;
+        ventesencours.disabled = true;
+        let ventesnondebutees = document.getElementById("ventesnondebutees");
+        ventesnondebutees.checked = false;
+        ventesnondebutees.disabled = true;
+        let ventesterminees = document.getElementById("ventesterminees");
+        ventesterminees.checked = false;
+        ventesterminees.disabled = true;
+        
+        let encheresouvertes = document.getElementById("encheresouvertes");
+        encheresouvertes.disabled = false;
+        let encheresencours = document.getElementById("encheresencours");
+        encheresencours.disabled = false;
+        let encheresremportees = document.getElementById("encheresremportees");
+        encheresremportees.disabled = false;
+    }
+    function onclickVentes(){
+        let encheresouvertes = document.getElementById("encheresouvertes");
+        encheresouvertes.checked = false;
+        encheresouvertes.disabled = true;
+        let encheresencours = document.getElementById("encheresencours");
+        encheresencours.checked = false;
+        encheresencours.disabled = true;
+        let encheresremportees = document.getElementById("encheresremportees");
+        encheresremportees.checked = false;
+        encheresremportees.disabled = true;
+        
+        let ventesencours = document.getElementById("ventesencours");
+        ventesencours.disabled = false;
+        let ventesnondebutees = document.getElementById("ventesnondebutees");
+        ventesnondebutees.disabled = false;
+        let ventesterminees = document.getElementById("ventesterminees");
+        ventesterminees.disabled = false;
+    }
+	</script>
+
+	<%@ include file="/WEB-INF/fragments/footer.html" %>
 </body>
 </html>
