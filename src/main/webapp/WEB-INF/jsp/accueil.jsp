@@ -46,8 +46,82 @@
 			
 		</form>
 	</div>
-
+	<br>
 	
+	<c:if test="${ !empty sessionScope.identifiant && !empty sessionScope.userLoggedIn }">
+		<div class="container">
+			 <div class="row justify-content-start">
+				<div class="col-4">
+					<input type="radio" name="filtres" id="achats" value="achats" onclick="onclickAchats()">
+					<label for="encheresencours">Achats</label><br>
+					
+					<input type="checkbox" name="encheresouvertes" id="encheresouvertes">
+					<label for="encheresencours">Enchères ouvertes</label><br>
+					<input type="checkbox" name="encheresencours" id="encheresencours">
+					<label for="encheresencours">Mes enchères en cours</label><br>
+					<input type="checkbox" name="encheresremportees" id="encheresremportees">
+					<label for="encheresremportees">Mes enchères remportées</label>	
+				</div>		
+				<div class="col-4">
+				<input type="radio" name="filtres" id="ventes" value="ventes" onclick="onclickVentes()">
+				<label for="ventes">Mes ventes</label><br>
+	
+					<input type="checkbox" name="ventesencours" id="ventesencours">
+					<label for="ventesencours">Mes ventes en cours</label><br>
+					<input type="checkbox" name="ventesnondebutees" id="ventesnondebutees">
+					<label for="ventesnondebutees">Ventes non débutées</label><br>
+					<input type="checkbox" name="ventesterminees" id="ventesterminees">
+					<label for="ventesterminees">Ventes terminéees</label>	
+				</div>
+			</div>
+		</div>
+	</c:if>
+
+	<script type="application/javascript">
+		
+    function onclickAchats(){
+        let ventesencours = document.getElementById("ventesencours");
+        ventesencours.checked = false;
+        ventesencours.disabled = true;
+        let ventesnondebutees = document.getElementById("ventesnondebutees");
+        ventesnondebutees.checked = false;
+        ventesnondebutees.disabled = true;
+        let ventesterminees = document.getElementById("ventesterminees");
+        ventesterminees.checked = false;
+        ventesterminees.disabled = true;
+        
+        let encheresouvertes = document.getElementById("encheresouvertes");
+        encheresouvertes.disabled = false;
+        let encheresencours = document.getElementById("encheresencours");
+        encheresencours.disabled = false;
+        let encheresremportees = document.getElementById("encheresremportees");
+        encheresremportees.disabled = false;
+    }
+
+    function onclickVentes(){
+        let encheresouvertes = document.getElementById("encheresouvertes");
+        encheresouvertes.checked = false;
+        encheresouvertes.disabled = true;
+        let encheresencours = document.getElementById("encheresencours");
+        encheresencours.checked = false;
+        encheresencours.disabled = true;
+        let encheresremportees = document.getElementById("encheresremportees");
+        encheresremportees.checked = false;
+        encheresremportees.disabled = true;
+        
+        let ventesencours = document.getElementById("ventesencours");
+        ventesencours.disabled = false;
+        let ventesnondebutees = document.getElementById("ventesnondebutees");
+        ventesnondebutees.disabled = false;
+        let ventesterminees = document.getElementById("ventesterminees");
+        ventesterminees.disabled = false;
+    }
+
+	</script>
+
+
+
+
 	<%@ include file="/WEB-INF/fragments/footer.html" %>
 </body>
 </html>
