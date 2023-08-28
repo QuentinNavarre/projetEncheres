@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 public class Enchere {
 
-	private int noUtilisateur;
+	private Integer utilisateurId;
 	private int noArticle;
 	private Timestamp dateEnchere;
 	private int montantEnchere;
@@ -12,11 +12,11 @@ public class Enchere {
 	// Les getters et setters
 
 	public int getNoUtilisateur() {
-		return noUtilisateur;
+		return utilisateurId;
 	}
 
-	public void setNoUtilisateur(int noUtilisateur) {
-		this.noUtilisateur = noUtilisateur;
+	public void setNoUtilisateur(int utilisateurId) {
+		this.utilisateurId = utilisateurId;
 	}
 
 	public int getNoArticle() {
