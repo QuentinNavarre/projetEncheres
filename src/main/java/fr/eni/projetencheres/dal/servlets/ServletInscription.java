@@ -125,7 +125,9 @@ public class ServletInscription extends HttpServlet {
 				pstmt.executeUpdate();
 
 				// Redirection vers la page d'accueil
-				response.sendRedirect("PageAccueil.jsp");
+				response.sendRedirect(request.getContextPath() + "/encheres");
+				//request.getRequestDispatcher("/WEB-INF/jsp/accueil.jsp").forward(request, response);
+				//response.sendRedirect("accueil.jsp");
 			} catch (NamingException | SQLException e) {
 				if (e instanceof SQLException && ((SQLException) e).getSQLState().equals("23000")) {
 					// Une violation de contrainte d'unicité s'est produite
