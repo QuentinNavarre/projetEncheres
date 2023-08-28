@@ -12,20 +12,27 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet("/ServletSeDeconnecter")
 public class ServletSeDeconnecter extends HttpServlet {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
+	private static final long INACTIVITY_TIMEOUT = 5 * 60 * 1000; // 5 minutes
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Affichez la page de déconnexion
+        request.getRequestDispatcher("Deconnection.jsp").forward(request, response);
+    }
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);
 
         if (session != null) {
-            session.invalidate();
-        }
+            long lastActivityTime = session.getLastAccessedTime();
+            long currentTime = System.currentTimeMillis();
 
-        // Redirection vers la page de déconnexion
-        response.sendRedirect("Deconnection.jsp");
+            if (currentTime - lastActivityTime >= INACTIVITY_TIMEOUT) {
+                session.invalidate();
+                response.sendRedirect("Deconnection.jsp");
+            } else {
+                response.sendRedirect("Deconnection.jsp?error=inactivity");
+            }
+        }
     }
 }
-
