@@ -36,4 +36,3 @@ public class ServletSeDeconnecter extends HttpServlet {
         }
     }
 }
-
