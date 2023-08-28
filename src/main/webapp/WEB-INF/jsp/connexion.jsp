@@ -55,5 +55,39 @@
     </form>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js" integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa" crossorigin="anonymous"></script>
+<%@ include file="/WEB-INF/fragments/head.jsp" %>
+<body>
+	<nav class="navbar bg-body-tertiary">
+		<div class="container-fluid">
+			<span class="navbar-brand mb-0 h1">ENI-ENCHÈRES</span>
+		</div>
+	</nav>
+	<div class="my-4 text-center">
+		<form method="post">
+			<c:if test="${!empty listeCodesErreur}">
+				<div class="alert alert-danger" role="alert">
+				  <strong>Erreur!</strong>
+				  <ul>
+				  	<c:forEach var="code" items="${listeCodesErreur}">
+				  		<li>${LecteurMessage.getMessageErreur(code)}</li>
+				  	</c:forEach>
+				  </ul>
+				</div>
+			</c:if>
+	        <label for="login">Login:</label>
+	        <input type="text" id="login" name="login" required><br><br>
+	        
+	        <label for="mdp">Mot de passe:</label>
+	        <input type="password" id="mdp" name="mdp" required><br><br>
+	        
+	        <input type="submit" value="Se connecter">
+	        <label for="rememberMe">Se souvenir de moi :</label>
+			<input type="checkbox" name="rememberMe" id="rememberMe">
+			<input type="text" name="login" id="login" value="${rememberedUser}">	       
+	    </form>
+    <br>
+   <button onclick="window.location.href='${pageContext.request.contextPath}/Inscription'">Créer un compte</button>
+	</div>
+   <%@ include file="/WEB-INF/fragments/footer.html" %>
 </body>
 </html>
