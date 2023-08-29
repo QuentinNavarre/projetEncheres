@@ -13,27 +13,8 @@
 </head>
 <body>
 
-	<nav class="navbar bg-body-tertiary">
-		<div class="container-fluid">
-			<span class="navbar-brand mb-0 h1"><a href="${pageContext.request.contextPath}/encheres"><img src="${pageContext.request.contextPath}/resources/logo.png" alt="Logo" class="img-fluid rounded-circle" style="max-width: 100px; max-height: 80px;"></a>			
-			ENI-ENCHÈRES</span>
-			<div class="d-flex justify-content-start">
-				<c:if
-					test="${empty sessionScope.identifiant && empty sessionScope.userLoggedIn }">
-					<a href="${pageContext.request.contextPath}/SeConnecter">S'inscrire - Se connecter</a>
-				</c:if>
-				<c:if
-					test="${ !empty sessionScope.identifiant && !empty sessionScope.userLoggedIn }">
-					<p>Bonjour ${ sessionScope.identifiant }</p>
-					<a href="${pageContext.request.contextPath}/ListeProfils">Liste Utilisateurs</a>
-					<a href="#">Enchères</a>
-					<a href="#">Vendre un article</a>
-					<a href="${pageContext.request.contextPath}/MonProfil">Mon profil</a>
-					<a href="${pageContext.request.contextPath}/TestServletDeconnexion">Se déconnecter</a>
-				</c:if>
-			</div>
-		</div>
-	</nav>
+	<%@ include file="/WEB-INF/fragments/nav.html" %>
+	
 	<c:if test="${not empty user}">
 	<form action="ModifierProfil" method="post" accept-charset="UTF-8">
 	<p>Modifier profil de  ${user.pseudo}</p>

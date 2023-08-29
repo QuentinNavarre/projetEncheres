@@ -7,11 +7,7 @@
 <%@ include file="/WEB-INF/fragments/head.jsp" %>
 <body>
 	
-	<nav class="navbar bg-body-tertiary">
-		<div class="container-fluid">
-			<span class="navbar-brand mb-0 h1">ENI-ENCHÈRES</span>
-		</div>
-	</nav>
+	<%@ include file="/WEB-INF/fragments/navNoUser.html" %>
 	
 	<div class="my-4 text-center">
 		<form method="post">
