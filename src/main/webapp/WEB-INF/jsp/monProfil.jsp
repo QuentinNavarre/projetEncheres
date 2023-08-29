@@ -19,6 +19,7 @@
         <p><strong>Code Postal:</strong> <c:out value="${user.code_postal}" /></p>
         <p><strong>Ville:</strong> <c:out value="${user.ville}" /></p>
         <button onclick="window.location.href = '${pageContext.request.contextPath}/ModifierProfil';"> Modifier</button>
+        <button onclick="window.location.href = '${pageContext.request.contextPath}/SupprimerProfil';"> Supprimer le compte</button>
     </c:if>
 
 <%@ include file="/WEB-INF/fragments/footer.html" %>

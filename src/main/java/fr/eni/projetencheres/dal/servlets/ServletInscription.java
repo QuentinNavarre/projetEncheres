@@ -129,7 +129,8 @@ public class ServletInscription extends HttpServlet {
 				//request.getRequestDispatcher("/WEB-INF/jsp/accueil.jsp").forward(request, response);
 				//response.sendRedirect("accueil.jsp");
 			} catch (NamingException | SQLException e) {
-				if (e instanceof SQLException && ((SQLException) e).getSQLState().equals("23000")) {
+				e.printStackTrace();
+				 if (e instanceof SQLException && ((SQLException) e).getSQLState().equals("23000")) {
 					// Une violation de contrainte d'unicité s'est produite
 					if (e.getMessage().contains("UC_Pseudo")) {
 						// Le pseudo est déjà utilisé
