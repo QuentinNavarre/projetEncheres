@@ -102,4 +102,8 @@ public class UtilisateurManager {
 	public void modifierProfil(Utilisateur user) throws BusinessException {
 		utilisateurDAO.modifierUtilisateur(user);
 		}
+	
+	public void supprimerUtilisateur(Utilisateur user) throws BusinessException {
+		utilisateurDAO.supprimerUtilisateur(user);
+	}
 }

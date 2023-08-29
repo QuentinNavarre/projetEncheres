@@ -19,8 +19,8 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 	private static final String SELECT_ALL = "SELECT pseudo, nom, prenom, email, telephone, rue, code_postal, ville FROM UTILISATEURS";
 	private static final String SELECT_USER = "SELECT pseudo, nom, prenom, email, telephone, rue, code_postal, ville FROM UTILISATEURS WHERE pseudo = ?;";
 	private static final String UPDATE_USER = "UPDATE UTILISATEURS SET nom=?, prenom=?, email=?, telephone=?, rue=?, code_postal=?, ville=? WHERE pseudo = ?;";
-	
-	
+	private static final String DELETE_USER = "DELETE FROM UTILISATEURS WHERE pseudo = ?;";
+			
 	private Utilisateur getUtilisateurByLogin(String login, String requete) throws BusinessException {
 		Utilisateur user = null;
 		
@@ -157,5 +157,23 @@ public void modifierUtilisateur(Utilisateur utilisateur) throws BusinessExceptio
 		throw be;
 		}
 	}
+
+public void supprimerUtilisateur (Utilisateur utilisateur) throws BusinessException {
+	String requete = DELETE_USER;
+	
+	try(Connection cnx = ConnectionProvider.getConnection(); 
+			PreparedStatement psmt = cnx.prepareStatement(requete)){
+		
+		psmt.execute();
+		
+			}catch (SQLException e) {
+				BusinessException be = new BusinessException();
+				be.ajouterErreur(CodesResultatDAL.SQL_EXCEPTION);
+				e.printStackTrace();
+				throw be;
+	
+			}
+}
+
 }
 
