@@ -7,20 +7,7 @@
 <%@ include file="/WEB-INF/fragments/head.jsp"%>
 <body>
 	<header>
-
 		<%@ include file="/WEB-INF/fragments/nav.html"%>
-		<c:if test="${action == 'participe'}">
-			<!-- Affichage spécifique pour l'action "participe" -->
-    ...
-</c:if>
-		<c:if test="${action == 'gagnees'}">
-			<!-- Affichage spécifique pour l'action "gagnees" -->
-    ...
-</c:if>
-		<c:if test="${action == 'encheresOuvertes'}">
-			<!-- Affichage spécifique pour l'action "encheresOuvertes" -->
-    ...
-</c:if>
 
 		<h1>Liste des Enchères en Cours</h1>
 	</header>
@@ -37,6 +24,38 @@
 			</select>
 			<button type="submit">Rechercher</button>
 		</form>
+
+		<!-- Afficher des filtres pour les utilisateurs connectés -->
+		<c:if test="${sessionScope.userId != null}">
+			<h2>Filtres :</h2>
+			<div>
+				<label> <input type="checkbox" name="achats" value="achats">
+					Achats
+				</label> <label> <input type="checkbox" name="ventes" value="ventes">
+					Ventes
+				</label>
+			</div>
+			<div id="achatsFilters">
+				<h3>Achats :</h3>
+				<label> <input type="checkbox" name="enchereOuverte"
+					value="enchereOuverte"> Enchères ouvertes
+				</label> <label> <input type="checkbox" name="mesEncheresEnCours"
+					value="mesEncheresEnCours"> Mes enchères en cours
+				</label> <label> <input type="checkbox" name="mesEncheresRemportees"
+					value="mesEncheresRemportees"> Mes enchères remportées
+				</label>
+			</div>
+			<div id="ventesFilters">
+				<h3>Ventes :</h3>
+				<label> <input type="checkbox" name="mesVentesEnCours"
+					value="mesVentesEnCours"> Mes ventes en cours
+				</label> <label> <input type="checkbox" name="ventesNonDebutees"
+					value="ventesNonDebutees"> Ventes non débutées
+				</label> <label> <input type="checkbox" name="ventesTerminees"
+					value="ventesTerminees"> Ventes terminées
+				</label>
+			</div>
+		</c:if>
 	</div>
 	<table>
 		<tr>
@@ -54,3 +73,4 @@
 		<%@ include file="/WEB-INF/fragments/footer.html"%>
 </body>
 </html>
+

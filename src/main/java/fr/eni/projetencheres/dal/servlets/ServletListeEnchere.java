@@ -1,7 +1,6 @@
 package fr.eni.projetencheres.dal.servlets;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -11,30 +10,35 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import fr.eni.projetencheres.BusinessException;
 import fr.eni.projetencheres.bo.Enchere;
-import fr.eni.projetencheres.dal.ListeEnchereDAO;
+import fr.eni.projetencheres.dal.EnchereDAO;
 
 @WebServlet("/ServletListeEnchere")
 public class ServletListeEnchere extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	public ServletListeEnchere() {
-		super();
-	}
-
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		try {
-			ListeEnchereDAO enchereDAO = new ListeEnchereDAO();
-			String action = request.getParameter("action");
+			// Récupérer la session de l'utilisateur
 			HttpSession session = request.getSession(false);
 
+			// Vérifier si l'utilisateur est connecté
 			if (session != null && session.getAttribute("userId") != null) {
 				int idUtilisateur = (int) session.getAttribute("userId");
 				List<Enchere> encheres = null;
 
+				// Récupérer l'action à effectuer depuis les paramètres de la requête
+				String action = request.getParameter("action");
+
+				// Créer une instance de la classe EnchereDAO
+				EnchereDAO enchereDAO = new EnchereDAO();
+
+				// En fonction de l'action, effectuer la requête appropriée
 				if (action == null || "toutes".equals(action)) {
-					encheres = enchereDAO.getToutesEncheres();
+					encheres = enchereDAO.filterEncheres(null, null, false, false, false, false, false, false, false,
+							false, idUtilisateur);
 					action = "toutes";
 				} else if ("participe".equals(action)) {
 					encheres = enchereDAO.getEncheresAuxquellesUtilisateurParticipe(idUtilisateur);
@@ -44,15 +48,18 @@ public class ServletListeEnchere extends HttpServlet {
 					encheres = enchereDAO.getEncheresOuvertesPourUtilisateur(idUtilisateur);
 				}
 
+				// Ajouter la liste d'enchères à la requête
 				request.setAttribute("encheres", encheres);
-
-				request.getRequestDispatcher("/WEB-INF/jsp/ListeEncheres.jsp").forward(request, response);
-
 			}
-		} catch (SQLException e) {
-			e.printStackTrace(); // TODO rediriger vers une page d'erreur personnalisée.
-		} catch (Exception e) {
-			e.printStackTrace();
+
+			// Rediriger vers la page ListeEncheres.jsp (quelle que soit la session)
+			request.getRequestDispatcher("/WEB-INF/jsp/ListeEncheres.jsp").forward(request, response);
+
+		} catch (BusinessException e) {
+			// Gérer les exceptions BusinessException en redirigeant vers une page d'erreur
+			// personnalisée
+			request.setAttribute("errorMessage", e.getMessage());
+			request.getRequestDispatcher("/WEB-INF/jsp/error.jsp").forward(request, response);
 		}
 	}
 
