@@ -8,11 +8,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import fr.eni.projetencheres.dal.ArticleDAO;
 import fr.eni.projetencheres.dal.DAOFactory;
-import fr.eni.projetencheres.dal.UtilisateurDAO;
 import fr.eni.projetencheres.BusinessException;
+import fr.eni.projetencheres.bll.UtilisateurManager;
 import fr.eni.projetencheres.bo.*;
 
 /**
@@ -34,9 +35,13 @@ public class ServletNouvelleVente extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	    String nomArticle = request.getParameter("nomarticle");
+		HttpSession session = request.getSession();
+		String utilisateurConnecte = (String) session.getAttribute("identifiant");
+		int ID = UtilisateurManager.getInstance().getID(utilisateurConnecte);
+		
+		String nomArticle = request.getParameter("nomarticle");
 	    String description = request.getParameter("description");
-	    String categorie = request.getParameter("select");
+	    Integer noCategorie = Integer.parseInt(request.getParameter("categorie"));
 	    Integer miseAPrix = Integer.parseInt(request.getParameter("miseaprix"));
 	    LocalDate dateDebut = LocalDate.parse(request.getParameter("datedebut"));
 	    LocalDate dateFin = LocalDate.parse(request.getParameter("datefin"));
@@ -44,39 +49,20 @@ public class ServletNouvelleVente extends HttpServlet {
 	    String codePostal = request.getParameter("codepostal");
 	    String ville = request.getParameter("ville");
 
-	    // récupération pseudo
-        UtilisateurDAO utilisateurDAO = DAOFactory.getUtilisateurDAO();
-        Utilisateur utilisateur = null;
-		try {
-			utilisateur = utilisateurDAO.getUtilisateurByPseudo("pseudo");
+	    Article article = new Article(nomArticle, description, dateDebut, dateFin, miseAPrix, 0, ID, noCategorie);
+
+	    ArticleDAO articleDAO = DAOFactory.getArticleDAO();
+        try {
+			articleDAO.insertArticle(article, ID);
 		} catch (BusinessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-        if (utilisateur != null) {
-            // création d'un nouvel article
-            Article article = new Article(nomArticle, description, dateDebut, dateFin, miseAPrix, 0, utilisateur.getUtilisateurId(), 0);
-
-
-            // insertion de l'article
-            ArticleDAO articleDAO = DAOFactory.getArticleDAO();
-            try {
-				articleDAO.insertArticle(article);
-			} catch (BusinessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
- 
-            response.sendRedirect(request.getContextPath() + "/encheres");
-        } else {
-            // TODO : gérer les erreurs
-            response.sendRedirect(request.getContextPath() + "/NouvelleVente");
-				
-	        
-	        
-	    }
+        response.sendRedirect(request.getContextPath() + "/encheres");
+     
+        
+        
 	}
+
 
 }

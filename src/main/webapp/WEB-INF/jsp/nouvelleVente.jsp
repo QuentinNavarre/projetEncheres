@@ -18,8 +18,8 @@
 		
 		<form action=NouvelleVente method="post" class="well form-horizontal">
 			<div class="saisie">
-				<label for="article">Article :</label>
-	       		<input type="text" id="article" name="article" required>	
+				<label for="nomarticle">Article :</label>
+	       		<input type="text" id="nomarticle" name="nomarticle" required>	
 			</div>	
 			<br>
 			<div class="saisie">
@@ -29,12 +29,12 @@
 			<br>
 			<div class="saisie">
 				<label for="categorie">Catégorie : </label>
-				<select name="select" id="select" required>
+				<select name="categorie" id="categorie" required>
 					<option value="" disabled selected>Choisir une catégorie</option>
-					<option value="informatique">Informatique</option>
-					<option value="ameublemen">Ameublement</option>
-					<option value="vêtement">Vêtement</option>
-					<option value="sportLoisirs">Sport & Loisirs</option>
+					<option value="1">Informatique</option>
+					<option value="2">Ameublement</option>
+					<option value="3">Vêtement</option>
+					<option value="4">Sport & Loisirs</option>
 				</select>
 			</div>
 			<br>
