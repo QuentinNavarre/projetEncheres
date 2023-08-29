@@ -27,7 +27,7 @@
 					<p>Bonjour ${ sessionScope.identifiant }</p>
 					<a href="${pageContext.request.contextPath}/ListeProfils">Liste Utilisateurs</a>
 					<a href="#">Enchères</a>
-					<a href="#">Vendre un article</a>
+					<a href="">Vendre un article</a>
 					<a href="${pageContext.request.contextPath}/MonProfil">Mon profil</a>
 					<a href="${pageContext.request.contextPath}/TestServletDeconnexion">Se déconnecter</a>
 				</c:if>
