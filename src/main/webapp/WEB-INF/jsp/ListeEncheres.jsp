@@ -4,11 +4,23 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
-<%@ include file="/WEB-INF/fragments/head.jsp" %>
+<%@ include file="/WEB-INF/fragments/head.jsp"%>
 <body>
 	<header>
-		
-<%@ include file="/WEB-INF/fragments/nav.html" %>
+
+		<%@ include file="/WEB-INF/fragments/nav.html"%>
+		<c:if test="${action == 'participe'}">
+			<!-- Affichage spécifique pour l'action "participe" -->
+    ...
+</c:if>
+		<c:if test="${action == 'gagnees'}">
+			<!-- Affichage spécifique pour l'action "gagnees" -->
+    ...
+</c:if>
+		<c:if test="${action == 'encheresOuvertes'}">
+			<!-- Affichage spécifique pour l'action "encheresOuvertes" -->
+    ...
+</c:if>
 
 		<h1>Liste des Enchères en Cours</h1>
 	</header>

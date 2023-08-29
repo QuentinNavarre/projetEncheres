@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.Statement;
 
 import fr.eni.projetencheres.bo.Enchere;
 
@@ -90,4 +91,55 @@ public class ListeEnchereDAO {
 		}
 		return encheresGagnees;
 	}
+
+	public List<Enchere> getEncheresOuvertesPourUtilisateur(int idUtilisateur) throws SQLException {
+		List<Enchere> encheresOuvertes = new ArrayList<>();
+		try (Connection connection = ConnectionProvider.getConnection();
+				PreparedStatement preparedStatement = connection.prepareStatement(
+						"SELECT * FROM encheres e " + "INNER JOIN articles_vendus a ON e.no_article = a.no_article "
+								+ "WHERE e.date_enchere > NOW() " + "AND e.no_utilisateur = ?")) {
+
+			preparedStatement.setInt(1, idUtilisateur);
+
+			ResultSet resultSet = preparedStatement.executeQuery();
+
+			while (resultSet.next()) {
+				Enchere enchere = new Enchere();
+				enchere.setNoUtilisateur(resultSet.getInt("no_utilisateur"));
+				enchere.setNoArticle(resultSet.getInt("no_article"));
+				enchere.setDateEnchere(resultSet.getTimestamp("date_enchere"));
+				enchere.setMontantEnchere(resultSet.getInt("montant_enchere"));
+
+				encheresOuvertes.add(enchere);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return encheresOuvertes;
+	}
+
+	public List<Enchere> getToutesEncheres() throws SQLException {
+		List<Enchere> toutesEncheres = new ArrayList<>();
+
+		try (Connection connection = ConnectionProvider.getConnection();
+				Statement statement = connection.createStatement();
+				ResultSet resultSet = statement.executeQuery("SELECT * FROM encheres")) {
+
+			while (resultSet.next()) {
+				Enchere enchere = new Enchere();
+				enchere.setNoUtilisateur(resultSet.getInt("no_utilisateur"));
+				enchere.setNoArticle(resultSet.getInt("no_article"));
+				enchere.setDateEnchere(resultSet.getTimestamp("date_enchere"));
+				enchere.setMontantEnchere(resultSet.getInt("montant_enchere"));
+
+				toutesEncheres.add(enchere);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		}
+
+		return toutesEncheres;
+	}
+
 }

@@ -26,38 +26,31 @@ public class ServletListeEnchere extends HttpServlet {
 			throws ServletException, IOException {
 		try {
 			ListeEnchereDAO enchereDAO = new ListeEnchereDAO();
+			String action = request.getParameter("action");
+			HttpSession session = request.getSession(false);
 
-			String action = request.getParameter("action"); // Ajoutez un paramètre "action" pour déterminer l'action de
-															// l'utilisateur
+			if (session != null && session.getAttribute("userId") != null) {
+				int idUtilisateur = (int) session.getAttribute("userId");
+				List<Enchere> encheres = null;
 
-			if ("participe".equals(action)) {
-				HttpSession session = request.getSession(false);
-
-				if (session != null && session.getAttribute("userId") != null) {
-					int idUtilisateur = (int) session.getAttribute("userId");
-
-					List<Enchere> encheresParticipe = enchereDAO
-							.getEncheresAuxquellesUtilisateurParticipe(idUtilisateur);
-
-					request.setAttribute("encheres", encheresParticipe);
-
-					request.getRequestDispatcher("/WEB-INF/jsp/EncheresParticipe.jsp").forward(request, response);
-				} else {
-					response.sendRedirect("PageDeConnexion.jsp");
+				if (action == null || "toutes".equals(action)) {
+					encheres = enchereDAO.getToutesEncheres();
+					action = "toutes";
+				} else if ("participe".equals(action)) {
+					encheres = enchereDAO.getEncheresAuxquellesUtilisateurParticipe(idUtilisateur);
+				} else if ("gagnees".equals(action)) {
+					encheres = enchereDAO.getEncheresGagneesParUtilisateur(idUtilisateur);
+				} else if ("encheresOuvertes".equals(action)) {
+					encheres = enchereDAO.getEncheresOuvertesPourUtilisateur(idUtilisateur);
 				}
-			} else if ("gagnees".equals(action)) {
-				int idUtilisateur = (int) request.getSession().getAttribute("userId");
 
-				List<Enchere> encheresGagnees = enchereDAO.getEncheresGagneesParUtilisateur(idUtilisateur);
+				request.setAttribute("encheres", encheres);
 
-				request.setAttribute("encheres", encheresGagnees);
+				request.getRequestDispatcher("/WEB-INF/jsp/ListeEncheres.jsp").forward(request, response);
 
-				request.getRequestDispatcher("/WEB-INF/jsp/EncheresGagnees.jsp").forward(request, response);
 			}
-			// TODO exception
 		} catch (SQLException e) {
-			e.printStackTrace();
-
+			e.printStackTrace(); // TODO rediriger vers une page d'erreur personnalisée.
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
