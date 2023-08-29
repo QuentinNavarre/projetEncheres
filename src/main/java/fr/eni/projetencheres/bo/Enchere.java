@@ -10,6 +10,14 @@ public class Enchere {
 	private int montantEnchere;
 
 	// Les getters et setters
+	
+	public Enchere(Integer utilisateurId, int noArticle, Timestamp dateEnchere, int montantEnchere) {
+		super();
+		this.utilisateurId = utilisateurId;
+		this.noArticle = noArticle;
+		this.dateEnchere = dateEnchere;
+		this.montantEnchere = montantEnchere;
+	}
 
 	public int getNoUtilisateur() {
 		return utilisateurId;
