@@ -106,4 +106,14 @@ public class UtilisateurManager {
 	public void supprimerUtilisateur(String pseudo) throws BusinessException {
 		utilisateurDAO.supprimerUtilisateur(pseudo);
 	}
+	
+	public int getID(String pseudo) {
+		int ID = 0;
+		try {
+			ID = utilisateurDAO.getUtilisateurById(pseudo);
+		} catch (BusinessException e) {
+			e.printStackTrace();
+		}
+		return ID;
+	}
 }
