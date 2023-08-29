@@ -103,7 +103,7 @@ public class UtilisateurManager {
 		utilisateurDAO.modifierUtilisateur(user);
 		}
 	
-	public void supprimerUtilisateur(Utilisateur user) throws BusinessException {
-		utilisateurDAO.supprimerUtilisateur(user);
+	public void supprimerUtilisateur(String pseudo) throws BusinessException {
+		utilisateurDAO.supprimerUtilisateur(pseudo);
 	}
 }

@@ -10,7 +10,6 @@ import javax.servlet.http.HttpSession;
 
 import fr.eni.projetencheres.BusinessException;
 import fr.eni.projetencheres.bll.UtilisateurManager;
-import fr.eni.projetencheres.bo.Utilisateur;
 
 
 @WebServlet("/SupprimerProfil")
@@ -21,27 +20,25 @@ public class ServletSupprimerProfil extends HttpServlet {
 
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	}
-
-	
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 	    String utilisateurConnecte = (String) session.getAttribute("identifiant");
 	    
 		try {
-	        Utilisateur user = UtilisateurManager.getInstance().voirUtilisateur(utilisateurConnecte);
-
-	       UtilisateurManager.getInstance().supprimerUtilisateur(user);
+	       UtilisateurManager.getInstance().supprimerUtilisateur(utilisateurConnecte);
 	       
-	    // Déconnecter l'utilisateur après suppression (a voir de clem)
+	    // Déconnecter l'utilisateur après suppression
 	       session.invalidate();
 	        
-	        response.sendRedirect(request.getContextPath() + "/encheres");
-	        //request.getRequestDispatcher("/WEB-INF/jsp/monProfil.jsp").forward(request, response);
+	       request.getRequestDispatcher("WEB-INF/jsp/accueil.jsp").forward(request, response);
+
 		} catch (BusinessException e) {
 			e.printStackTrace();
 		}
 		
+	}
+
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	}
 
 }

@@ -158,12 +158,14 @@ public void modifierUtilisateur(Utilisateur utilisateur) throws BusinessExceptio
 		}
 	}
 
-public void supprimerUtilisateur (Utilisateur utilisateur) throws BusinessException {
+public void supprimerUtilisateur (String pseudo) throws BusinessException {
 	String requete = DELETE_USER;
 	
 	try(Connection cnx = ConnectionProvider.getConnection(); 
 			PreparedStatement psmt = cnx.prepareStatement(requete)){
 		
+		 psmt.setString(1, pseudo);
+		 
 		psmt.execute();
 		
 			}catch (SQLException e) {
