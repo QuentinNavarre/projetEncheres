@@ -157,5 +157,10 @@ public void modifierUtilisateur(Utilisateur utilisateur) throws BusinessExceptio
 		throw be;
 		}
 	}
+
+@Override
+public Utilisateur getUtilisateurById(Integer utilisateurId) throws BusinessException {
+	return getUtilisateurByLogin(String.valueOf(utilisateurId), SELECT_USER_BY_PSEUDO);
+}
 }
 

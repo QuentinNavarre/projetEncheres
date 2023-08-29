@@ -11,5 +11,5 @@ public interface UtilisateurDAO {
 	public List<Utilisateur> getAllUtilisateurs() throws BusinessException;
 	public Utilisateur getUtilisateur(String pseudo) throws BusinessException;
 	public void modifierUtilisateur(Utilisateur utilisateur) throws BusinessException;
-
+	public Utilisateur getUtilisateurById(Integer utilisateurId) throws BusinessException;
 }
