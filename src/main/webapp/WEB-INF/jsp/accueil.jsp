@@ -43,9 +43,9 @@
 					<input type="checkbox" name="encheresouvertes" id="encheresouvertes">
 					<label for="encheresencours">Enchères ouvertes</label><br>
 					<input type="checkbox" name="encheresencours" id="encheresencours">
-					<label for="encheresencours">Mes enchères en cours</label><br>
+					<label for="encheresencours" style="white-space: nowrap;">Mes enchères en cours</label><br>
 					<input type="checkbox" name="encheresremportees" id="encheresremportees">
-					<label for="encheresremportees">Mes enchères remportées</label>	
+					<label for="encheresremportees" style="white-space: nowrap;">Mes enchères remportées</label>	
 				</div>		
 				<div class="col-4">
 				<input type="radio" name="filtres" id="ventes" value="ventes" onclick="onclickVentes()">
