@@ -8,6 +8,16 @@
 <body>
 
 	<%@ include file="/WEB-INF/fragments/nav.html" %>
+	<c:if test="${not empty erreurs}">
+		<div class="alert alert-danger">
+			<ul>
+				<c:forEach var="erreur" items="${erreurs}">
+					<li>${erreur}</li>
+				</c:forEach>
+			</ul>
+		</div>
+	</c:if>
+
 	
 	<c:if
 		test="${ !empty sessionScope.identifiant && !empty sessionScope.userLoggedIn }">
@@ -57,11 +67,11 @@
   				<div class="card-body">
   					<h5 class="card-title text-secondary">Retrait</h5>
 					<label for="rue">Rue :</label>
-		       		<input type="text" id="rue" name="rue" required><br><br>
+		       		<input type="text" id="rue" name="rue"><br><br>
 					<label for="codepostal">Code postal :</label>
-		       		<input type="text" id="codepostal" name="codepostal" required><br><br>
+		       		<input type="text" id="codepostal" name="codepostal"><br><br>
 					<label for="ville">Ville :</label>
-		       		<input type="text" id="ville" name="ville" required><br>
+		       		<input type="text" id="ville" name="ville"><br>
             	</div>
             </div>
 			<br>

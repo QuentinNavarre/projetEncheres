@@ -2,6 +2,8 @@ package fr.eni.projetencheres.dal.servlets;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -36,11 +38,6 @@ public class ServletNouvelleVente extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// récupération utilisateurId
-		HttpSession session = request.getSession();
-		String utilisateurConnecte = (String) session.getAttribute("identifiant");
-		int ID = UtilisateurManager.getInstance().getID(utilisateurConnecte);
-		
 		String nomArticle = request.getParameter("nomarticle");
 	    String description = request.getParameter("description");
 	    Integer noCategorie = Integer.parseInt(request.getParameter("categorie"));
@@ -51,6 +48,12 @@ public class ServletNouvelleVente extends HttpServlet {
 	    String codePostal = request.getParameter("codepostal");
 	    String ville = request.getParameter("ville");
 	    
+	    // récupération utilisateurId
+	 	HttpSession session = request.getSession();
+	 	String utilisateurConnecte = (String) session.getAttribute("identifiant");
+	 	int ID = UtilisateurManager.getInstance().getID(utilisateurConnecte);
+	    
+	    
 	    // récupération catégorie
 	    CategorieDAO categorieDAO = DAOFactory.getCategorieDAO();
 	    Categorie categorie = null;
@@ -60,24 +63,47 @@ public class ServletNouvelleVente extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		// validarion champs pour ajout d'un nouvel article
+		List<String> erreurs = new ArrayList<>();
 
-	    Article article = new Article(nomArticle, description, dateDebut, dateFin, miseAPrix, 0, ID, noCategorie);
-	    ArticleDAO articleDAO = DAOFactory.getArticleDAO();
-	    try {
-	        articleDAO.insertArticle(article, ID, categorie);
-	        request.getSession().setAttribute("insertionReussie", true);
-	        response.sendRedirect(request.getContextPath() + "/encheres");
-	    
-	    } catch (BusinessException e) {
-	        e.printStackTrace();
-	        request.setAttribute("listeCodesErreur", "L'ajout d'un nouvel a échoué. Veuillez réessayer.");
-	        request.getRequestDispatcher("WEB-INF/jsp/nouvelleVente.jsp").forward(request, response);
-	    }
-        
-     
-        
-        
-	}
+		if (nomArticle.isEmpty()) {
+		    erreurs.add("Le nom de l'article est requis.");
+		}
 
+		if (description.isEmpty()) {
+		    erreurs.add("La description est requise.");
+		} else if (description.length() > 300) {
+		    erreurs.add("La description ne doit pas dépasser 300 caractères.");
+		}
+
+		if (dateDebut.isBefore(LocalDate.now())) {
+		    erreurs.add("La date de début de l'enchère ne peut pas être antérieure à la date d'aujourd'hui.");
+		}
+
+		if (dateFin.isBefore(dateDebut)) {
+		    erreurs.add("La date de fin de l'enchère ne peut pas être antérieure à la date de début.");
+		}
+
+		if (!erreurs.isEmpty()) {
+		    request.setAttribute("erreurs", erreurs);
+		    // si erreurs, redirigé vers la même page avec les erreurs affichées
+		    request.getRequestDispatcher("WEB-INF/jsp/nouvelleVente.jsp").forward(request, response);
+		    return; // Ajoutez cette ligne pour empêcher l'exécution du code suivant
+		}
+
+		Article article = new Article(nomArticle, description, dateDebut, dateFin, miseAPrix, 0, ID, noCategorie);
+		ArticleDAO articleDAO = DAOFactory.getArticleDAO();
+		try {
+		     articleDAO.insertArticle(article, ID, categorie);
+		     request.getSession().setAttribute("insertionReussie", true);
+		     response.sendRedirect(request.getContextPath() + "/encheres");
+
+		} catch (BusinessException e) {
+		     e.printStackTrace();
+		     request.setAttribute("listeCodesErreur", "L'ajout d'un nouvel article a échoué. Veuillez réessayer.");
+		     request.getRequestDispatcher("WEB-INF/jsp/nouvelleVente.jsp").forward(request, response);
+		    }
+		}
 
 }
