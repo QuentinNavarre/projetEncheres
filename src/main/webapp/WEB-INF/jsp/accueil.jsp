@@ -10,6 +10,18 @@
 	<%@ include file="/WEB-INF/fragments/nav.html" %>
 
 	<header>
+		<%-- message confirmation ajout nouvel article  --%>
+		<c:if test="${sessionScope.insertionReussie}">
+			<br>
+			<div class="alert alert-success" role="alert">
+				L'article a été ajouté avec succès !
+			</div>
+			<br>
+			<%-- réinitialisation l'attribut --%>
+			<%
+			session.removeAttribute("insertionReussie");
+			%>
+		</c:if>
 		<div class="my-4 text-center">
 			<h1>Liste des enchères</h1>
 		</div>
@@ -29,8 +41,7 @@
 			
 		</form>
 	</div>
-	
-	
+
 	<br>
 
 	<c:if test="${ !empty sessionScope.identifiant && !empty sessionScope.userLoggedIn }">

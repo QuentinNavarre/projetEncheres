@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import fr.eni.projetencheres.dal.ArticleDAO;
+import fr.eni.projetencheres.dal.CategorieDAO;
 import fr.eni.projetencheres.dal.DAOFactory;
 import fr.eni.projetencheres.BusinessException;
 import fr.eni.projetencheres.bll.UtilisateurManager;
@@ -35,6 +36,7 @@ public class ServletNouvelleVente extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// récupération utilisateurId
 		HttpSession session = request.getSession();
 		String utilisateurConnecte = (String) session.getAttribute("identifiant");
 		int ID = UtilisateurManager.getInstance().getID(utilisateurConnecte);
@@ -48,17 +50,30 @@ public class ServletNouvelleVente extends HttpServlet {
 	    String rue = request.getParameter("rue");
 	    String codePostal = request.getParameter("codepostal");
 	    String ville = request.getParameter("ville");
-
-	    Article article = new Article(nomArticle, description, dateDebut, dateFin, miseAPrix, 0, ID, noCategorie);
-
-	    ArticleDAO articleDAO = DAOFactory.getArticleDAO();
-        try {
-			articleDAO.insertArticle(article, ID);
+	    
+	    // récupération catégorie
+	    CategorieDAO categorieDAO = DAOFactory.getCategorieDAO();
+	    Categorie categorie = null;
+		try {
+			categorie = categorieDAO.getCategoriebyId(String.valueOf(noCategorie));
 		} catch (BusinessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        response.sendRedirect(request.getContextPath() + "/encheres");
+
+	    Article article = new Article(nomArticle, description, dateDebut, dateFin, miseAPrix, 0, ID, noCategorie);
+	    ArticleDAO articleDAO = DAOFactory.getArticleDAO();
+	    try {
+	        articleDAO.insertArticle(article, ID, categorie);
+	        request.getSession().setAttribute("insertionReussie", true);
+	        response.sendRedirect(request.getContextPath() + "/encheres");
+	    
+	    } catch (BusinessException e) {
+	        e.printStackTrace();
+	        request.setAttribute("listeCodesErreur", "L'ajout d'un nouvel a échoué. Veuillez réessayer.");
+	        request.getRequestDispatcher("WEB-INF/jsp/nouvelleVente.jsp").forward(request, response);
+	    }
+        
      
         
         
