@@ -67,11 +67,11 @@
   				<div class="card-body">
   					<h5 class="card-title text-secondary">Retrait</h5>
 					<label for="rue">Rue :</label>
-		       		<input type="text" id="rue" name="rue"><br><br>
+		       		<input type="text" id="rue" name="rue" value="${user.rue}"><br><br>
 					<label for="codepostal">Code postal :</label>
-		       		<input type="text" id="codepostal" name="codepostal"><br><br>
+		       		<input type="text" id="codepostal" name="codepostal" value="${user.code_postal}"><br><br>
 					<label for="ville">Ville :</label>
-		       		<input type="text" id="ville" name="ville"><br>
+		       		<input type="text" id="ville" name="ville" value="${user.ville}"><br>
             	</div>
             </div>
 			<br>

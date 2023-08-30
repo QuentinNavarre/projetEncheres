@@ -31,6 +31,14 @@ public class ServletNouvelleVente extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
+		String utilisateurConnecte = (String) session.getAttribute("identifiant");
+		try {
+			Utilisateur user = UtilisateurManager.getInstance().voirUtilisateur(utilisateurConnecte);
+			request.setAttribute("user", user);
+		} catch (BusinessException e) {
+			e.printStackTrace();
+		}
 		request.getRequestDispatcher("WEB-INF/jsp/nouvelleVente.jsp").forward(request, response);
 	}
 
