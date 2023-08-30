@@ -10,27 +10,33 @@
 	<%@ include file="/WEB-INF/fragments/nav.html" %>
 	
 	<c:if test="${not empty user}">
+	<br>
+		<div class="d-flex justify-content-center">
+			<div class="card">
+  				<div class="card-body">
 	<form action="ModifierProfil" method="post" accept-charset="UTF-8">
-	<p>Modifier profil de  ${user.pseudo}</p>
-        <label for="nom">Nom :</label>
+	<h5 class="card-title text-secondary">Modifier profil de  ${user.pseudo}</h5>
+        <label for="nom"><strong>Nom :</strong></label>
         <input type="text" id="nom" name="nom" value="${user.nom}"><br>
-        <label for="prenom">Prenom :</label>
+        <label for="prenom"><strong>Prenom :</strong></label>
         <input type="text" id="prenom" name="prenom" value="${user.prenom}"><br>
-        <label for="email">Email :</label>
+        <label for="email"><strong>Email :</strong></label>
         <input type="text" id="email" name="email" value="${user.email}"><br>
-        <label for="tel">Téléphone :</label>
+        <label for="tel"><strong>Téléphone :</strong></label>
         <input type="text" id="tel" name="tel" value="${user.telephone}"><br>
-        <label for="rue">Rue :</label>
+        <label for="rue"><strong>Rue :</strong></label>
         <input type="text" id="rue" name="rue" value="${user.rue}"><br>
-        <label for="cp">Code Postal :</label>
+        <label for="cp"><strong>Code Postal :</strong></label>
         <input type="text" id="cp" name="cp" value="${user.code_postal}"><br>
-        <label for="ville">Ville :</label>
+        <label for="ville"><strong>Ville :</strong></label>
         <input type="text" id="ville" name="ville" value="${user.ville}"><br>
-        <input type="submit" value="Confirmer">
+        <input type="submit" class="btn btn-secondary" value="Confirmer">
         </form>
+        </div>
+	   		</div>
+	   	</div>
     </c:if>
     
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js" integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa" crossorigin="anonymous"></script>
+<%@ include file="/WEB-INF/fragments/footer.html" %>
 </body>
 </html>
