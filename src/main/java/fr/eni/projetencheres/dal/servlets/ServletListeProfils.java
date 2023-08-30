@@ -29,7 +29,7 @@ public class ServletListeProfils extends HttpServlet {
 		} catch (BusinessException e) {
 			e.printStackTrace();
 		}
-		 this.getServletContext().getRequestDispatcher("/WEB-INF/jsp/listeProfils.jsp").forward(request, response);
+		 this.getServletContext().getRequestDispatcher("/WEB-INF/jsp/fr/listeProfils.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -37,7 +37,7 @@ public class ServletListeProfils extends HttpServlet {
 		try {
 			Utilisateur user = UtilisateurManager.getInstance().voirUtilisateur(pseudo);
 			 request.setAttribute("utilisateur", user);
-		        request.getRequestDispatcher("/WEB-INF/jsp/affichageProfil.jsp").forward(request, response);
+		        request.getRequestDispatcher("/WEB-INF/jsp/fr/affichageProfil.jsp").forward(request, response);
 		} catch (BusinessException e) {
 			e.printStackTrace();
 		}

@@ -30,7 +30,7 @@ public class ServletModifierProfil extends HttpServlet {
 		    	try {
 		    		Utilisateur user = UtilisateurManager.getInstance().voirUtilisateur(utilisateurConnecte);
 		    		request.setAttribute("user", user);
-		    		request.getRequestDispatcher("/WEB-INF/jsp/modifierProfil.jsp").forward(request, response);
+		    		request.getRequestDispatcher("/WEB-INF/jsp/fr/modifierProfil.jsp").forward(request, response);
 				} catch (BusinessException e) {
 					e.printStackTrace();
 				}

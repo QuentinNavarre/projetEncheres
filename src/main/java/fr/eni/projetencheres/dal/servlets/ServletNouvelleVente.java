@@ -39,7 +39,7 @@ public class ServletNouvelleVente extends HttpServlet {
 		} catch (BusinessException e) {
 			e.printStackTrace();
 		}
-		request.getRequestDispatcher("WEB-INF/jsp/nouvelleVente.jsp").forward(request, response);
+		request.getRequestDispatcher("WEB-INF/jsp/fr/nouvelleVente.jsp").forward(request, response);
 	}
 
 	/**
@@ -96,7 +96,7 @@ public class ServletNouvelleVente extends HttpServlet {
 		if (!erreurs.isEmpty()) {
 		    request.setAttribute("erreurs", erreurs);
 		    // si erreurs, redirigé vers la même page avec les erreurs affichées
-		    request.getRequestDispatcher("WEB-INF/jsp/nouvelleVente.jsp").forward(request, response);
+		    request.getRequestDispatcher("WEB-INF/jsp/fr/nouvelleVente.jsp").forward(request, response);
 		    return; // Ajoutez cette ligne pour empêcher l'exécution du code suivant
 		}
 
@@ -110,7 +110,7 @@ public class ServletNouvelleVente extends HttpServlet {
 		} catch (BusinessException e) {
 		     e.printStackTrace();
 		     request.setAttribute("listeCodesErreur", "L'ajout d'un nouvel article a échoué. Veuillez réessayer.");
-		     request.getRequestDispatcher("WEB-INF/jsp/nouvelleVente.jsp").forward(request, response);
+		     request.getRequestDispatcher("WEB-INF/jsp/fr/nouvelleVente.jsp").forward(request, response);
 		    }
 		}
 

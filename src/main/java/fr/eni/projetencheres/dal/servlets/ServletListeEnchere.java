@@ -53,7 +53,7 @@ public class ServletListeEnchere extends HttpServlet {
 			}
 
 			// Rediriger vers la page ListeEncheres.jsp (quelle que soit la session)
-			request.getRequestDispatcher("/WEB-INF/jsp/ListeEncheres.jsp").forward(request, response);
+			request.getRequestDispatcher("/WEB-INF/jsp/fr/ListeEncheres.jsp").forward(request, response);
 
 		} catch (BusinessException e) {
 			// Gérer les exceptions BusinessException en redirigeant vers une page d'erreur
