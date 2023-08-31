@@ -41,7 +41,8 @@ public class ServletListeEnchere extends HttpServlet {
 
 		List<EnchereArticle> listeEnchereArticle = new ArrayList<>();
 		List<Categorie> listeCategorie = new ArrayList<>();
-
+		
+		/*
 		try {
 			if (session != null && session.getAttribute("userId") != null) {
 				String mestrucs = request.getParameter("mestrucs");
@@ -104,7 +105,7 @@ public class ServletListeEnchere extends HttpServlet {
 			request.setAttribute("errorMessage", e.getMessage());
 			request.getRequestDispatcher("/WEB-INF/jsp/error.jsp").forward(request, response);
 			return; // Terminer le traitement en cas d'erreur
-		}
+		}*/
 
 		try {
 			listeCategorie = categorieBLL.selectAll();
