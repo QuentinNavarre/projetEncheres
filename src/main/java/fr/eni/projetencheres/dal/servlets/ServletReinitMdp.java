@@ -34,6 +34,4 @@ public class ServletReinitMdp extends HttpServlet {
         String subject = "Votre mot de passe a été réinitialisé";
  
         }
-    
- 
 }

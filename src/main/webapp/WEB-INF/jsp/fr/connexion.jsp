@@ -42,4 +42,5 @@
 	 
    <%@ include file="/WEB-INF/fragments/footer.html" %>
 </body>
+
 </html>
