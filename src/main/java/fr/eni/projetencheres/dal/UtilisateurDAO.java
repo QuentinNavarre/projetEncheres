@@ -13,5 +13,6 @@ public interface UtilisateurDAO {
 	public void modifierUtilisateur(Utilisateur utilisateur) throws BusinessException;
 	public void supprimerUtilisateur(String pseudo) throws BusinessException;
 	public int getUtilisateurById(String pseudo) throws BusinessException;
+	public String[] getAdresseUtilisateur(String pseudo) throws BusinessException;
 
 }

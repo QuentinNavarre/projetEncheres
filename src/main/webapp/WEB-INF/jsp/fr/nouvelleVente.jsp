@@ -17,6 +17,11 @@
 			</ul>
 		</div>
 	</c:if>
+	<c:if test="${not empty requestScope.listeCodesErreur}">
+        <div class="alert alert-danger">
+            ${requestScope.listeCodesErreur}
+        </div>
+    </c:if>
 
 	
 	<c:if
