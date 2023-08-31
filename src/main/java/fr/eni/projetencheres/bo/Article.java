@@ -12,10 +12,18 @@ public class Article {
 	private Integer prixVente;
 	private Integer utilisateurId;
 	private Integer noCategorie;
+	private Enchere enchere;
+	private String etatVente;
 	
+	
+
+	public Article() {
+		super();
+	}
+
 	public Article(Integer noArticle, String nomArticle, String description, LocalDate dateDebut, LocalDate dateFin,
 			Integer prixInitial, Integer prixVente, Integer utilisateurId, Integer noCategorie) {
-		super();
+		
 		this.noArticle = noArticle;
 		this.nomArticle = nomArticle;
 		this.description = description;
@@ -118,7 +126,33 @@ public class Article {
 				+ ", dateDebut=" + dateDebut + ", dateFin=" + dateFin + ", prixInitial=" + prixInitial + ", prixVente="
 				+ prixVente + ", utilisateurId=" + utilisateurId + ", noCategorie=" + noCategorie + "]";
 	}
-	
-	
-	
+
+//	 public void setImage(Image image) {
+//	        this.image = image;
+//	    }
+
+	public String getNom() {
+		return nomArticle;
+	}
+
+	public boolean isActif() {
+		return "actif".equals(etatVente);
+	}
+
+	public Enchere getEnchere() {
+		return enchere;
+	}
+
+	public void setEnchere(Enchere enchere) {
+		this.enchere = enchere;
+	}
+
+	public String getEtatVente() {
+		return etatVente;
+	}
+
+	public void setEtatVente(String etatVente) {
+		this.etatVente = etatVente;
+	}
+
 }
