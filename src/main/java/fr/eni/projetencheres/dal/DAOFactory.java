@@ -9,7 +9,7 @@ public abstract class DAOFactory {
 	}
 
 	public static ArticleDAO getArticleDAO() {
-		return new ArticleDAOImpl();
+		return new ArticleDAOJdbc();
 	}
 
 	public static CategorieDAO getCategorieDAO() {
