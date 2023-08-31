@@ -15,6 +15,8 @@ import javax.servlet.http.HttpSession;
 import fr.eni.projetencheres.dal.ArticleDAO;
 import fr.eni.projetencheres.dal.CategorieDAO;
 import fr.eni.projetencheres.dal.DAOFactory;
+import fr.eni.projetencheres.dal.RetraitDAO;
+import fr.eni.projetencheres.dal.UtilisateurDAO;
 import fr.eni.projetencheres.BusinessException;
 import fr.eni.projetencheres.bll.UtilisateurManager;
 import fr.eni.projetencheres.bo.*;
@@ -31,8 +33,17 @@ public class ServletNouvelleVente extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("WEB-INF/jsp/nouvelleVente.jsp").forward(request, response);
+		HttpSession session = request.getSession();
+		String utilisateurConnecte = (String) session.getAttribute("identifiant");
+		try {
+			Utilisateur user = UtilisateurManager.getInstance().voirUtilisateur(utilisateurConnecte);
+			request.setAttribute("user", user);
+		} catch (BusinessException e) {
+			e.printStackTrace();
+		}
+		request.getRequestDispatcher("WEB-INF/jsp/fr/nouvelleVente.jsp").forward(request, response);
 	}
+		
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
@@ -44,26 +55,12 @@ public class ServletNouvelleVente extends HttpServlet {
 	    Integer miseAPrix = Integer.parseInt(request.getParameter("miseaprix"));
 	    LocalDate dateDebut = LocalDate.parse(request.getParameter("datedebut"));
 	    LocalDate dateFin = LocalDate.parse(request.getParameter("datefin"));
-	    String rue = request.getParameter("rue");
-	    String codePostal = request.getParameter("codepostal");
-	    String ville = request.getParameter("ville");
-	    
-	    // récupération utilisateurId
+	   
+	    // récupération utilisateurId de l'utilisateur connecté
 	 	HttpSession session = request.getSession();
 	 	String utilisateurConnecte = (String) session.getAttribute("identifiant");
 	 	int ID = UtilisateurManager.getInstance().getID(utilisateurConnecte);
 	    
-	    
-	    // récupération catégorie
-	    CategorieDAO categorieDAO = DAOFactory.getCategorieDAO();
-	    Categorie categorie = null;
-		try {
-			categorie = categorieDAO.getCategoriebyId(String.valueOf(noCategorie));
-		} catch (BusinessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
 		// validarion champs pour ajout d'un nouvel article
 		List<String> erreurs = new ArrayList<>();
 
@@ -87,22 +84,59 @@ public class ServletNouvelleVente extends HttpServlet {
 
 		if (!erreurs.isEmpty()) {
 		    request.setAttribute("erreurs", erreurs);
-		    // si erreurs, redirigé vers la même page avec les erreurs affichées
-		    request.getRequestDispatcher("WEB-INF/jsp/nouvelleVente.jsp").forward(request, response);
+		    request.getRequestDispatcher("WEB-INF/jsp/fr/nouvelleVente.jsp").forward(request, response);
 		    return; // Ajoutez cette ligne pour empêcher l'exécution du code suivant
 		}
-
+		
+		// création du nouvel article
 		Article article = new Article(nomArticle, description, dateDebut, dateFin, miseAPrix, 0, ID, noCategorie);
 		ArticleDAO articleDAO = DAOFactory.getArticleDAO();
+		
 		try {
-		     articleDAO.insertArticle(article, ID, categorie);
-		     request.getSession().setAttribute("insertionReussie", true);
-		     response.sendRedirect(request.getContextPath() + "/encheres");
+			// insertion de l'article
+			articleDAO.insertArticle(article, ID);
+
+			// récupération de la rue, du code postal et la ville pour le retrait
+			String rue = request.getParameter("rue");
+			String codePostal = request.getParameter("codepostal");
+			String ville = request.getParameter("ville");
+
+			// si aucune adresse n'a été saisie dans le formulaire, récupération de l'adresse de l'utilisateur connecté
+			UtilisateurDAO utilisateurDAO = DAOFactory.getUtilisateurDAO();
+			String[] adresseUtilisateur;
+			try {
+				adresseUtilisateur = utilisateurDAO.getAdresseUtilisateur(utilisateurConnecte);
+				if (rue == null || rue.isEmpty() || codePostal == null || codePostal.isEmpty() || ville == null
+						|| ville.isEmpty()) {
+					rue = adresseUtilisateur[0];
+					codePostal = adresseUtilisateur[1];
+					ville = adresseUtilisateur[2];
+				}
+			} catch (BusinessException e) {
+				e.printStackTrace();
+				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+						"Une erreur s'est produite lors de la récupération de l'adresse.");
+			}
+			
+		     // création des modalités de retrait de l'article
+			int lastNoArticle = articleDAO.getLastNoArticle(ID);
+		    // System.out.println("Le noArticle récupéré est" +lastNoArticle);
+		     Retrait retrait = new Retrait(lastNoArticle, rue, codePostal, ville);
+		     RetraitDAO retraitDAO = DAOFactory.getRetraitDAO();
+		     try {
+		    	    retraitDAO.insertRetrait(retrait);
+		    	    request.getSession().setAttribute("insertionReussie", true);
+				    response.sendRedirect(request.getContextPath() + "/encheres");
+		    	} catch (BusinessException e) {
+		    	    e.printStackTrace();
+		    	    request.setAttribute("listeCodesErreur", "L'ajout d'un nouvel article a échoué. Veuillez réessayer.");
+				    request.getRequestDispatcher("WEB-INF/jsp/fr/nouvelleVente.jsp").forward(request, response);
+		    	}
 
 		} catch (BusinessException e) {
 		     e.printStackTrace();
 		     request.setAttribute("listeCodesErreur", "L'ajout d'un nouvel article a échoué. Veuillez réessayer.");
-		     request.getRequestDispatcher("WEB-INF/jsp/nouvelleVente.jsp").forward(request, response);
+		     request.getRequestDispatcher("WEB-INF/jsp/fr/nouvelleVente.jsp").forward(request, response);
 		    }
 		}
 

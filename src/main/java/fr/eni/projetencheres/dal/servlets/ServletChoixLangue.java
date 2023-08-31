@@ -8,25 +8,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class ServletAccueil
+ * Servlet implementation class ServletChoixLangue
  */
-@WebServlet("/encheres")
-public class ServletAccueil extends HttpServlet {
+@WebServlet("/ChoixLangue")
+public class ServletChoixLangue extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("WEB-INF/jsp/fr/accueil.jsp").forward(request, response);
+		request.getRequestDispatcher("WEB-INF/jsp/choixLangue.jsp").forward(request, response);
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
 	}
 
 }

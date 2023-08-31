@@ -29,7 +29,7 @@ public class ServletSupprimerProfil extends HttpServlet {
 	    // Déconnecter l'utilisateur après suppression
 	       session.invalidate();
 	        
-	       request.getRequestDispatcher("WEB-INF/jsp/accueil.jsp").forward(request, response);
+	       request.getRequestDispatcher("WEB-INF/jsp/fr/accueil.jsp").forward(request, response);
 
 		} catch (BusinessException e) {
 			e.printStackTrace();

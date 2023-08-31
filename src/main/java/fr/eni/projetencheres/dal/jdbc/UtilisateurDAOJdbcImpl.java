@@ -21,7 +21,8 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 	private static final String UPDATE_USER = "UPDATE UTILISATEURS SET nom=?, prenom=?, email=?, telephone=?, rue=?, code_postal=?, ville=? WHERE pseudo = ?;";
 	private static final String DELETE_USER = "DELETE FROM UTILISATEURS WHERE pseudo = ?;";
 	private static final String SELECT_USERID = "SELECT no_utilisateur FROM UTILISATEURS WHERE pseudo = ?;";
-			
+	private static final String SELECT_USER_ADRESS = "SELECT pseudo, rue, code_postal, ville FROM UTILISATEURS WHERE pseudo = ?;";
+	
 	private Utilisateur getUtilisateurByLogin(String login, String requete) throws BusinessException {
 		Utilisateur user = null;
 		
@@ -134,66 +135,66 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 		return user;
 	}
 
-public void modifierUtilisateur(Utilisateur utilisateur) throws BusinessException {
-	String requete = UPDATE_USER;
-	
-	try(Connection cnx = ConnectionProvider.getConnection(); 
-			PreparedStatement psmt = cnx.prepareStatement(requete)){
-		
-		psmt.setString(1, utilisateur.getNom());
-		psmt.setString(2, utilisateur.getPrenom());
-		psmt.setString(3, utilisateur.getEmail());
-		psmt.setString(4, utilisateur.getTelephone());
-		psmt.setString(5, utilisateur.getRue());
-		psmt.setString(6, utilisateur.getCode_postal());
-		psmt.setString(7, utilisateur.getVille());
-		psmt.setString(8, utilisateur.getPseudo());
-		
-		psmt.executeUpdate();
+	public void modifierUtilisateur(Utilisateur utilisateur) throws BusinessException {
+		String requete = UPDATE_USER;
 
-		}catch(SQLException e) {
-		BusinessException be = new BusinessException();
-		be.ajouterErreur(CodesResultatDAL.SQL_EXCEPTION);
-		e.printStackTrace();
-		throw be;
+		try (Connection cnx = ConnectionProvider.getConnection();
+				PreparedStatement psmt = cnx.prepareStatement(requete)) {
+
+			psmt.setString(1, utilisateur.getNom());
+			psmt.setString(2, utilisateur.getPrenom());
+			psmt.setString(3, utilisateur.getEmail());
+			psmt.setString(4, utilisateur.getTelephone());
+			psmt.setString(5, utilisateur.getRue());
+			psmt.setString(6, utilisateur.getCode_postal());
+			psmt.setString(7, utilisateur.getVille());
+			psmt.setString(8, utilisateur.getPseudo());
+
+			psmt.executeUpdate();
+
+		} catch (SQLException e) {
+			BusinessException be = new BusinessException();
+			be.ajouterErreur(CodesResultatDAL.SQL_EXCEPTION);
+			e.printStackTrace();
+			throw be;
 		}
 	}
 
-public void supprimerUtilisateur (String pseudo) throws BusinessException {
-	String requete = DELETE_USER;
-	
-	try(Connection cnx = ConnectionProvider.getConnection(); 
-			PreparedStatement psmt = cnx.prepareStatement(requete)){
-		
-		 psmt.setString(1, pseudo);
-		 
-		psmt.execute();
-		
-			}catch (SQLException e) {
-				BusinessException be = new BusinessException();
-				be.ajouterErreur(CodesResultatDAL.SQL_EXCEPTION);
-				e.printStackTrace();
-				throw be;
-			}
-}
+	public void supprimerUtilisateur(String pseudo) throws BusinessException {
+		String requete = DELETE_USER;
 
-public int getUtilisateurById(String pseudo) throws BusinessException {
-	int ID = 0;
-	String requete = SELECT_USERID;
-	
-	try(Connection cnx = ConnectionProvider.getConnection(); 
-			PreparedStatement psmt = cnx.prepareStatement(requete)){
-		
-		 psmt.setString(1, pseudo);
-		 
-		 try(ResultSet rs = psmt.executeQuery()){
-				if(rs.next()) {
-		 ID = rs.getInt("no_utilisateur");
+		try (Connection cnx = ConnectionProvider.getConnection();
+				PreparedStatement psmt = cnx.prepareStatement(requete)) {
+
+			psmt.setString(1, pseudo);
+
+			psmt.execute();
+
+		} catch (SQLException e) {
+			BusinessException be = new BusinessException();
+			be.ajouterErreur(CodesResultatDAL.SQL_EXCEPTION);
+			e.printStackTrace();
+			throw be;
 		}
-			}catch(SQLException e) {
+	}
+
+	public int getUtilisateurById(String pseudo) throws BusinessException {
+		int ID = 0;
+		String requete = SELECT_USERID;
+
+		try (Connection cnx = ConnectionProvider.getConnection();
+				PreparedStatement psmt = cnx.prepareStatement(requete)) {
+
+			psmt.setString(1, pseudo);
+
+			try (ResultSet rs = psmt.executeQuery()) {
+				if (rs.next()) {
+					ID = rs.getInt("no_utilisateur");
+				}
+			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-		}catch(SQLException e) {
+		} catch (SQLException e) {
 			BusinessException be = new BusinessException();
 			be.ajouterErreur(CodesResultatDAL.SQL_EXCEPTION);
 			e.printStackTrace();
@@ -201,5 +202,32 @@ public int getUtilisateurById(String pseudo) throws BusinessException {
 		}
 		return ID;
 	}
-}
 
+	@Override
+	public String[] getAdresseUtilisateur(String pseudo) throws BusinessException {
+		String[] adresse = new String[3];
+		String requete = SELECT_USER_ADRESS;
+		try (Connection cnx = ConnectionProvider.getConnection();
+				PreparedStatement psmt = cnx.prepareStatement(requete)) {
+
+			psmt.setString(1, pseudo);
+
+			try (ResultSet rs = psmt.executeQuery()) {
+				if (rs.next()) {
+					adresse[0] = rs.getString("rue");
+					adresse[1] = rs.getString("code_postal");
+					adresse[2] = rs.getString("ville");
+				}
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} catch (SQLException e) {
+			BusinessException be = new BusinessException();
+			be.ajouterErreur(CodesResultatDAL.SQL_EXCEPTION);
+			e.printStackTrace();
+			throw be;
+		}
+		return adresse;
+	}
+}

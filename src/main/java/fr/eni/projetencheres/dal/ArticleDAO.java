@@ -5,11 +5,7 @@ import fr.eni.projetencheres.bo.Article;
 import fr.eni.projetencheres.bo.Categorie;
 
 public interface ArticleDAO {
-	void insertArticle(Article article, int categorieId, Categorie categorie) throws BusinessException;
+	public void insertArticle(Article article, int ID) throws BusinessException;
 
-	Article selectById(int articleId) throws BusinessException;
-
-	void delete(Integer noArticle);
+	public int getLastNoArticle(int ID) throws BusinessException;
 }
-
-

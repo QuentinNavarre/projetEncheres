@@ -30,7 +30,7 @@ public class ServletInscription extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		request.getRequestDispatcher("/WEB-INF/jsp/inscription.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/jsp/fr/inscription.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -89,7 +89,7 @@ public class ServletInscription extends HttpServlet {
 
 		if (!erreurs.isEmpty()) {
 			request.setAttribute("erreurs", erreurs);
-			request.getRequestDispatcher("/WEB-INF/jsp/inscription.jsp").forward(request, response);
+			request.getRequestDispatcher("/WEB-INF/jsp/fr/inscription.jsp").forward(request, response);
 			return;
 		}
 
@@ -144,7 +144,7 @@ public class ServletInscription extends HttpServlet {
 						// Autre erreur SQL
 						request.setAttribute("inscriptionErreur", "Erreur lors de l'inscription. Veuillez réessayer.");
 					}
-					request.getRequestDispatcher("/WEB-INF/jsp/inscription.jsp").forward(request, response);
+					request.getRequestDispatcher("/WEB-INF/jsp/fr/inscription.jsp").forward(request, response);
 				} else {
 					e.printStackTrace(); // Ou gestion d'autres erreurs SQL
 				}
@@ -165,7 +165,7 @@ public class ServletInscription extends HttpServlet {
 			// Gérer le cas où l'inscription n'est pas valide
 			// Rediriger l'utilisateur vers la page d'inscription avec un message d'erreur
 			request.setAttribute("inscriptionErreur", "L'inscription a échoué. Veuillez réessayer.");
-			request.getRequestDispatcher("/WEB-INF/jsp/inscription.jsp").forward(request, response);
+			request.getRequestDispatcher("/WEB-INF/jsp/fr/inscription.jsp").forward(request, response);
 		}
 	}
 

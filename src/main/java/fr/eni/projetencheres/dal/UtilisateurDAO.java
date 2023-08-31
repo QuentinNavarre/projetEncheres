@@ -15,5 +15,5 @@ public interface UtilisateurDAO {
 	public int getUtilisateurById(String pseudo) throws BusinessException;
 	public void addCredit(Utilisateur utilACrediter, int offre);
 	public Utilisateur selectById(int utilisateurId);
-
+	public String[] getAdresseUtilisateur(String pseudo) throws BusinessException;
 }

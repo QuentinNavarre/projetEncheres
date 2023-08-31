@@ -6,15 +6,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import fr.eni.projetencheres.BusinessException;
 import fr.eni.projetencheres.bo.Article;
 import fr.eni.projetencheres.bo.Categorie;
 
 public class ArticleDAOImpl implements ArticleDAO {
 	private static final String INSERT = "INSERT INTO ARTICLES_VENDUS(nom_article, description, date_debut_encheres, "
 			+ "date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie) VALUES (?,?,?,?,?,?,?,?)";
+	private static final String SELECT_LAST_NOARTICLE = "SELECT TOP 1 no_article FROM ARTICLES_VENDUS WHERE no_utilisateur = ? ORDER BY no_article DESC";
 
 	@Override
-	public void insertArticle(Article article, int ID, Categorie categorie) {
+	public void insertArticle(Article article, int ID) {
 		String requete = INSERT;
 
 		try (Connection con = ConnectionProvider.getConnection()) {
@@ -30,65 +32,30 @@ public class ArticleDAOImpl implements ArticleDAO {
 			stmt.setInt(8, article.getNoCategorie());
 
 			stmt.executeUpdate();
-
 		} catch (SQLException e) {
 			e.printStackTrace();
-
 		}
 	}
 
-	private static final String SELECT_BY_ID = "SELECT * FROM ARTICLES_VENDUS WHERE no_article = ?";
-
 	@Override
-	public Article selectById(int articleId) {
-		Article article = null;
-		String query = SELECT_BY_ID;
+	public int getLastNoArticle(int ID) throws BusinessException {
+		String requete = SELECT_LAST_NOARTICLE;
+		int lastNoArticle = -1;
 
-		try (Connection connection = ConnectionProvider.getConnection();
-				PreparedStatement statement = connection.prepareStatement(query)) {
+		try (Connection connection = ConnectionProvider.getConnection()) {
+			PreparedStatement preparedStatement = connection.prepareStatement(requete);
 
-			statement.setInt(1, articleId);
+			preparedStatement.setInt(1, ID);
 
-			try (ResultSet resultSet = statement.executeQuery()) {
-				if (resultSet.next()) {
-					// Créer un nouvel objet Article en utilisant les données de la base de données
-					article = new Article(resultSet.getInt("no_article"), resultSet.getString("nom_article"),
-							resultSet.getString("description"), resultSet.getDate("date_debut_encheres").toLocalDate(),
-							resultSet.getDate("date_fin_encheres").toLocalDate(), resultSet.getInt("prix_initial"),
-							resultSet.getInt("prix_vente"), resultSet.getInt("no_utilisateur"),
-							resultSet.getInt("no_categorie"));
+			try (ResultSet rs = preparedStatement.executeQuery()) {
+				if (rs.next()) {
+					lastNoArticle = rs.getInt("no_article");
 				}
 			}
 		} catch (SQLException e) {
-			// Gérer l'exception de manière appropriée, par exemple, en journalisant
-			// l'erreur
-			e.printStackTrace();
+			throw new BusinessException();
 		}
 
-		return article;
+		return lastNoArticle;
 	}
-
-	@Override
-	public void delete(Integer noArticle) {
-		// TODO Auto-generated method stub
-		
-	}
-
-//
-//	@Override
-//	public void delete(Integer noArticle) {
-//		String query = DELETE_ARTICLE;
-//
-//		try (Connection connection = ConnectionProvider.getConnection();
-//				PreparedStatement statement = connection.prepareStatement(query)) {
-//
-//			statement.setInt(1, noArticle);
-//			statement.executeUpdate();
-//
-//		} catch (SQLException e) {
-//
-//			e.printStackTrace();
-//		}
-//	}
-
 }

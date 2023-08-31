@@ -22,9 +22,9 @@ import fr.eni.projetencheres.bo.EnchereArticle;
 @WebServlet("/listeArticles")
 public class ServletListeEnchere extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	ArticleBLL articleBLL;
-	EnchereArticleBLL enchereArticleBLL;
-	CategorieBLL categorieBLL;
+	private ArticleBLL articleBLL;
+	private EnchereArticleBLL enchereArticleBLL;
+	private CategorieBLL categorieBLL;
 
 	@Override
 	public void init() throws ServletException {
@@ -35,86 +35,40 @@ public class ServletListeEnchere extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		List<EnchereArticle> listeEnchereArticle = new ArrayList<EnchereArticle>();
-		List<Categorie> listeCategorie = null;
-		String categorie = (String) request.getParameter("selectCategory");
-		String textArticle = (String) request.getParameter("textArticle");
+		String categorie = request.getParameter("selectCategory");
+		String textArticle = request.getParameter("textArticle");
+		HttpSession session = request.getSession(false);
 
-		HttpSession session = request.getSession(false); // Récupération de la session sans création
+		List<EnchereArticle> listeEnchereArticle = new ArrayList<>();
+		List<Categorie> listeCategorie = new ArrayList<>();
 
-		if (session != null && session.getAttribute("userId") != null) {
-			// L'utilisateur est connecté
-			String mestrucs = request.getParameter("mestrucs");
-			String mesachatsouverts = request.getParameter("mesachatsouverts");
-			String mesachatsencheres = request.getParameter("mesachatsencheres");
-			String mesachatsencheresremporte = request.getParameter("mesachatsencheresremporte");
-			String mesventesencours = request.getParameter("mesventesencours");
-			String mesventesnondebutees = request.getParameter("mesventesnondebutees");
-			String mesventesterminees = request.getParameter("mesventesterminees");
-			if (mestrucs != null) {
-				request.setAttribute("mestrucs", mestrucs);
-				if (mestrucs.equals("mesachats")) {
-					if (mesachatsouverts != null) {
+		try {
+			if (session != null && session.getAttribute("userId") != null) {
+				String mestrucs = request.getParameter("mestrucs");
+				if ("mesachats".equals(mestrucs)) {
+					if ("mesachatsouverts".equals(request.getParameter("mesachatsouverts"))) {
 						listeEnchereArticle = enchereArticleBLL.selectJoin();
-						request.setAttribute("mesachatsouverts", mesachatsouverts);
+					} else if ("mesachatsencheres".equals(request.getParameter("mesachatsencheres"))) {
+						listeEnchereArticle = enchereArticleBLL.selectJoinByUserEnchere(session.getAttribute("userId"));
+						// Effectuez ici des opérations spécifiques pour les enchères de l'utilisateur
+					} else if ("mesachatsencheresremporte".equals(request.getParameter("mesachatsencheresremporte"))) {
+						listeEnchereArticle = enchereArticleBLL
+								.selectJoinByUserEnchereVD(session.getAttribute("userId"));
+						// Effectuez ici des opérations spécifiques pour les enchères remportées par
+						// l'utilisateur
 					}
-
-					if (mesachatsencheres != null) {
-						try {
-							listeEnchereArticle = enchereArticleBLL
-									.selectJoinByUserEnchere(session.getAttribute("userId"));
-							for (EnchereArticle enchereArticle : listeEnchereArticle) {
-								// Code pour récupérer les informations de l'utilisateur
-								// Si nécessaire, vous pouvez le faire ici
-							}
-							request.setAttribute("mesachatsencheres", mesachatsencheres);
-						} catch (BusinessException e) {
-							e.printStackTrace();
-						}
-					}
-
-					if (mesachatsencheresremporte != null) {
-						try {
-							listeEnchereArticle = enchereArticleBLL
-									.selectJoinByUserEnchereVD(session.getAttribute("userId"));
-							for (EnchereArticle enchereArticle : listeEnchereArticle) {
-								// Code pour récupérer les informations de l'utilisateur
-								// Si nécessaire, vous pouvez le faire ici
-							}
-							request.setAttribute("mesachatsencheresremporte", mesachatsencheresremporte);
-						} catch (BusinessException e) {
-							e.printStackTrace();
-						}
-					}
-
-				}
-
-				if (mestrucs.equals("mesventes")) {
-					List<EnchereArticle> listeEnchereArticleEncours = new ArrayList<EnchereArticle>();
-					List<EnchereArticle> listeEnchereArticledebutees = new ArrayList<EnchereArticle>();
-					List<EnchereArticle> listeEnchereArticleterminees = new ArrayList<EnchereArticle>();
-					List<EnchereArticle> listeEnchereArticleByUser = null;
-					listeEnchereArticleByUser = enchereArticleBLL.selectJoinByUser(session.getAttribute("userId"));
-
-					if (mesventesencours != null) {
-						listeEnchereArticleEncours = listeEnchereArticleByUser.stream()
-								.filter(t -> t.getEtat_vente().contains("EC")).collect(Collectors.toList());
-						listeEnchereArticle.addAll(listeEnchereArticleEncours);
-						request.setAttribute("mesventesencours", mesventesencours);
-					}
-
-					if (mesventesnondebutees != null) {
-						listeEnchereArticledebutees = listeEnchereArticleByUser.stream()
-								.filter(t -> t.getEtat_vente().contains("CR")).collect(Collectors.toList());
-						listeEnchereArticle.addAll(listeEnchereArticledebutees);
-						request.setAttribute("mesventesnondebutees", mesventesnondebutees);
-					}
-
-					if (mesventesterminees != null) {
-						listeEnchereArticleterminees = listeEnchereArticleByUser.stream()
-								.filter(t -> t.getEtat_vente().contains("VD")).collect(Collectors.toList());
-						listeEnchereArticle.addAll(listeEnchereArticleterminees);
-						request.setAttribute("mesventesterminees", mesventesterminees);
+				} else if ("mesventes".equals(mestrucs)) {
+					List<EnchereArticle> listeEnchereArticleByUser = enchereArticleBLL
+							.selectJoinByUser(session.getAttribute("userId"));
+					if ("mesventesencours".equals(request.getParameter("mesventesencours"))) {
+						listeEnchereArticle.addAll(listeEnchereArticleByUser.stream()
+								.filter(t -> t.getEtat_vente().contains("EC")).collect(Collectors.toList()));
+					} else if ("mesventesnondebutees".equals(request.getParameter("mesventesnondebutees"))) {
+						listeEnchereArticle.addAll(listeEnchereArticleByUser.stream()
+								.filter(t -> t.getEtat_vente().contains("CR")).collect(Collectors.toList()));
+					} else if ("mesventesterminees".equals(request.getParameter("mesventesterminees"))) {
+						listeEnchereArticle.addAll(listeEnchereArticleByUser.stream()
+								.filter(t -> t.getEtat_vente().contains("VD")).collect(Collectors.toList()));
 					}
 				}
 
@@ -122,61 +76,34 @@ public class ServletListeEnchere extends HttpServlet {
 					if (categorie == null || categorie.isEmpty()) {
 						listeEnchereArticle = listeEnchereArticle.stream()
 								.filter(t -> t.getNom_article().contains(textArticle)).collect(Collectors.toList());
-						request.setAttribute("textArticle", textArticle);
 					} else if (textArticle == null || textArticle.isEmpty()) {
 						listeEnchereArticle = listeEnchereArticle.stream()
 								.filter(t -> t.getCategorie().contains(categorie)).collect(Collectors.toList());
-						request.setAttribute("categorie", categorie);
 					} else {
-						listeEnchereArticle = listeEnchereArticle.stream()
-								.filter(t -> t.getNom_article().contains(textArticle)).collect(Collectors.toList());
-
-						listeEnchereArticle = listeEnchereArticle.stream()
-								.filter(t -> t.getCategorie().contains(categorie)).collect(Collectors.toList());
-						request.setAttribute("textArticle", textArticle);
-						request.setAttribute("categorie", categorie);
+						listeEnchereArticle = listeEnchereArticle.stream().filter(
+								t -> t.getNom_article().contains(textArticle) && t.getCategorie().contains(categorie))
+								.collect(Collectors.toList());
 					}
 				}
 			} else {
-				listeEnchereArticle = enchereArticleBLL.selectJoin();
+				// L'utilisateur n'est pas connecté
 				if (categorie != null || textArticle != null) {
 					if (categorie == null || categorie.isEmpty()) {
-						listeEnchereArticle = listeEnchereArticle.stream()
-								.filter(t -> t.getNom_article().contains(textArticle)).collect(Collectors.toList());
-						request.setAttribute("textArticle", textArticle);
+						listeEnchereArticle = enchereArticleBLL.selectJoinLike(textArticle);
 					} else if (textArticle == null || textArticle.isEmpty()) {
-						listeEnchereArticle = listeEnchereArticle.stream()
-								.filter(t -> t.getCategorie().contains(categorie)).collect(Collectors.toList());
-						request.setAttribute("categorie", categorie);
+						listeEnchereArticle = enchereArticleBLL.selectJoinCat(categorie);
 					} else {
-						listeEnchereArticle = listeEnchereArticle.stream()
-								.filter(t -> t.getNom_article().contains(textArticle)).collect(Collectors.toList());
-
-						listeEnchereArticle = listeEnchereArticle.stream()
-								.filter(t -> t.getCategorie().contains(categorie)).collect(Collectors.toList());
-						request.setAttribute("textArticle", textArticle);
-						request.setAttribute("categorie", categorie);
+						listeEnchereArticle = enchereArticleBLL.selectJoinCatLike(categorie, textArticle);
 					}
-				}
-			}
-
-		} else {
-			// L'utilisateur n'est pas connecté
-			if (categorie != null || textArticle != null) {
-				if (categorie == null || categorie.isEmpty()) {
-					listeEnchereArticle = enchereArticleBLL.selectJoinLike(textArticle);
-					request.setAttribute("textArticle", textArticle);
-				} else if (textArticle == null || textArticle.isEmpty()) {
-					listeEnchereArticle = enchereArticleBLL.selectJoinCat(categorie);
-					request.setAttribute("categorie", categorie);
 				} else {
-					listeEnchereArticle = enchereArticleBLL.selectJoinCatLike(categorie, textArticle);
-					request.setAttribute("textArticle", textArticle);
-					request.setAttribute("categorie", categorie);
+					listeEnchereArticle = enchereArticleBLL.selectJoin();
 				}
-			} else {
-				listeEnchereArticle = enchereArticleBLL.selectJoin();
 			}
+		} catch (BusinessException e) {
+			// Gérer les exceptions BusinessException
+			request.setAttribute("errorMessage", e.getMessage());
+			request.getRequestDispatcher("/WEB-INF/jsp/error.jsp").forward(request, response);
+			return; // Terminer le traitement en cas d'erreur
 		}
 
 		try {
