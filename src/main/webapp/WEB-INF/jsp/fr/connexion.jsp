@@ -29,6 +29,9 @@
 	        <label for="mdp">Mot de passe:</label>
 	        <input type="password" id="mdp" name="mdp" required><br><br>
 	        
+	        <button onclick="window.location.href='${pageContext.request.contextPath}/reinitMdp">Mot de passe oublié</button><br><br>
+	        <a href="window.location.href='${pageContext.request.contextPath}/ReinitMdp">Mot de passe oublié</a><br><br>
+	        	        
 	        <input type="submit" value="Se connecter">
 	        <label for="rememberMe">Se souvenir de moi :</label>
 			<input type="checkbox" name="rememberMe" id="rememberMe">
@@ -36,6 +39,7 @@
     <br>
    <button onclick="window.location.href='${pageContext.request.contextPath}/Inscription'">Créer un compte</button>
 	</div>
+	 
    <%@ include file="/WEB-INF/fragments/footer.html" %>
 </body>
 </html>
