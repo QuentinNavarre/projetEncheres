@@ -181,5 +181,10 @@ public class Utilisateur {
 	public void setAdministrateur(Boolean administrateur) {
 		this.administrateur = administrateur;
 	}
+
+
+	public boolean isActif() {
+		return false;
+	}
 	
 }
