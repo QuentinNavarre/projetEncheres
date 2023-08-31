@@ -5,6 +5,9 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 import fr.eni.projetencheres.BusinessException;
 import fr.eni.projetencheres.bo.Article;
 import fr.eni.projetencheres.bo.Categorie;
@@ -15,6 +18,7 @@ public class ArticleDAOJdbc implements ArticleDAO {
 	private static final String INSERT = "INSERT INTO ARTICLES_VENDUS(nom_article, description, date_debut_encheres, "
 			+ "date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie) VALUES (?,?,?,?,?,?,?,?)";
 	private static final String SELECT_LAST_NOARTICLE = "SELECT TOP 1 no_article FROM ARTICLES_VENDUS WHERE no_utilisateur = ? ORDER BY no_article DESC";
+	private static final String SELECT_ARTICLES_ENCOURS =  "SELECT * FROM ARTICLES_VENDUS WHERE date_fin_encheres >= GETDATE()";
 
 	public Article selectById(int articleId) throws BusinessException {
 		Article article = null;
@@ -82,5 +86,37 @@ public class ArticleDAOJdbc implements ArticleDAO {
 		}
 
 		return lastNoArticle;
+	}
+
+	@Override
+	public List<Article> getArticlesEnCours() throws BusinessException {
+		List<Article> articles = new ArrayList();
+		String requete = SELECT_ARTICLES_ENCOURS;
+
+	    try (Connection connection = ConnectionProvider.getConnection() ) {
+	         PreparedStatement preparedStatement = connection.prepareStatement(requete);
+
+	        try (ResultSet rs = preparedStatement.executeQuery()) {
+	            while (rs.next()) {
+	                Article article = new Article(
+	                		rs.getInt("no_article"),
+	                		rs.getString("nom_article"),
+	                		rs.getString("description"),
+	                		rs.getDate("date_debut_encheres").toLocalDate(),
+	                		rs.getDate("date_fin_encheres").toLocalDate(),
+	                		rs.getInt("prix_initial"),
+	                		rs.getInt("prix_vente"),
+	                		rs.getInt("no_utilisateur"),
+	                		rs.getInt("no_categorie")
+	                );
+	                articles.add(article);
+	            }
+	        }
+	    } catch (SQLException e) {
+	        throw new BusinessException();
+	        // TODO : Gérer erreurs
+	    }
+
+	    return articles;
 	}
 }

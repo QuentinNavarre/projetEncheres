@@ -14,10 +14,16 @@ public class Article {
 	private Integer noCategorie;
 	private Enchere enchere;
 	private String etatVente;
+	
+	
+
+	public Article() {
+		super();
+	}
 
 	public Article(Integer noArticle, String nomArticle, String description, LocalDate dateDebut, LocalDate dateFin,
 			Integer prixInitial, Integer prixVente, Integer utilisateurId, Integer noCategorie) {
-		super();
+		
 		this.noArticle = noArticle;
 		this.nomArticle = nomArticle;
 		this.description = description;

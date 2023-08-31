@@ -230,4 +230,16 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 		}
 		return adresse;
 	}
+
+	@Override
+	public void addCredit(Utilisateur utilACrediter, int offre) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Utilisateur selectById(int utilisateurId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

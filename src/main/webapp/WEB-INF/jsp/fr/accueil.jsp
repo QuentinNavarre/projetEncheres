@@ -28,18 +28,20 @@
 	</header>
 
 	<div class="container">
-		<form>
-			<input type="text" id="filtrer" name="filtrer" placeholder="Je recherche..." ><br><br>
-			<select name="select" id="select">
-				<option value="" disabled selected>Choisir une catégorie</option>
-				<option value="informatique">Informatique</option>
-				<option value="ameublemen">Ameublement</option>
-				<option value="vêtement">Vêtement</option>
-				<option value="sportLoisirs">Sport & Loisirs</option>
-			</select><br><br>
+		<form action="/encheres" method="get">
+			<label for="nomArticleFiltre">Nom de l'article :</label> <input
+				type="text" name="nomArticleFiltre" id="nomArticleFiltre"> <label
+				for="categorieFiltre">Catégorie :</label> <select
+				name="idCategorieFiltre" id="categorieFiltre">
+				<option value="">Toutes les catégories</option>
+				<option value="1">Informatique</option>
+				<option value="2">Ameublement</option>
+				<option value="3">Vêtement</option>
+				<option value="4">Sport & Loisirs</option>
+			</select>
 			<button type="submit">Rechercher</button>
-			
 		</form>
+
 	</div>
 
 	<br>
@@ -73,7 +75,24 @@
 		</div>
 	</c:if>
 
+	<div class="container">
+		<c:forEach var="article" items="${articles}">
+			<div class="card">
+				<div class="card-body">
+					<h5 class="card-title">${article.nomArticle}</h5>
+					<p class="card-text">Prix initial : ${article.prixInitial} points</p>
+					<p class="card-text">Fin de l'enchère: ${article.dateFin}</p>
+				</div>
+			</div>
+			<br>
+		</c:forEach>
+	</div>
+
+
+
 	<script type="application/javascript">
+		
+		
 		
     function onclickAchats(){
         let ventesencours = document.getElementById("ventesencours");
@@ -111,6 +130,8 @@
         let ventesterminees = document.getElementById("ventesterminees");
         ventesterminees.disabled = false;
     }
+	
+	
 	</script>
 
 
